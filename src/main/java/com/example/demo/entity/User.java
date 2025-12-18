@@ -7,5 +7,10 @@ package com.example.demo.entity;
 //role-enum-customer,agent,admin
 @Entity
 public class User{
-
+    @Id
+    @GeneratedValue(Strategy=GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private String email;
+    private String 
 }
