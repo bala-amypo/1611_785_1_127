@@ -20,9 +20,21 @@ public class User{
     public String getName(){
         return name;
     }
-    public String getmail(){
+    public String getEmail(){
         return email;
     }
-    public String getpa
+    public String getPassword(){
+        return passwork;
+    }
+    public void setId(Long id){
+        this.id = id;
+    }
+    public void setName(String name){
+        this.name = name;
+    }
+    public void setEmail(String email){
+        this.email = email;
+    }
+    
 
 }
