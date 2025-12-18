@@ -13,6 +13,16 @@ public class User{
     private String name;
     private String email;
     private String password;
-    private enum custo;
+    //private enum role;
+    public Long getId(){
+        return id;
+    }
+    public String getName(){
+        return name;
+    }
+    public String getmail(){
+        return email;
+    }
+    public String getpa
 
 }
