@@ -25,7 +25,7 @@ public class PriorityRule {
     private String description;
 
     @Column(nullable = false)
-    private Integer weight; // positively influences computed priorityScore
+    private Integer weight; 
 
     @Column(nullable = false)
     private boolean active;
