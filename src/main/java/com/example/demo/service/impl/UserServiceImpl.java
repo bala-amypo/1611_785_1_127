@@ -1,10 +1,8 @@
 package com.example.demo.service.impl;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.example.demo.entity.User;
 import com.example.demo.entity.User.Role;
 import com.example.demo.repository.UserRepository;
@@ -17,12 +15,10 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     /* =====================
-       Test-required methods
+       Auth methods
        ===================== */
-
     @Override
     public User registerCustomer(String name, String email, String rawPassword) {
-
         if (userRepository.findByEmail(email).isPresent()) {
             throw new RuntimeException("email already exists");
         }
@@ -30,24 +26,24 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setFullName(name);
         user.setEmail(email);
-        user.setPassword(rawPassword); // store as plain text for now
+        user.setPassword(rawPassword); // plain text
         user.setRole(Role.CUSTOMER);
 
         return userRepository.save(user);
     }
 
     @Override
-    public User findByEmail(String email) {
-        if (userRepository.findByEmail(email).isPresent()) {
-            return userRepository.findByEmail(email).get();
+    public User login(String email, String password) {
+        User user = userRepository.findByEmail(email).orElse(null);
+        if (user != null && user.getPassword().equals(password)) {
+            return user;
         }
         return null;
     }
 
     /* =====================
-       CRUD-style methods
+       CRUD methods
        ===================== */
-
     @Override
     public User postData(User user) {
         return userRepository.save(user);
@@ -66,10 +62,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getData(long id) {
-        if (userRepository.findById(id).isPresent()) {
-            return userRepository.findById(id).get();
-        }
-        return null;
+        return userRepository.findById(id).orElse(null);
     }
 
     @Override

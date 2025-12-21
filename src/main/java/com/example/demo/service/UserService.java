@@ -5,17 +5,14 @@ import com.example.demo.entity.User;
 
 public interface UserService {
 
+    // Auth
     User registerCustomer(String name, String email, String rawPassword);
+    User login(String email, String password);
 
-    User findByEmail(String email);
-
+    // CRUD
     User postData(User user);
-
     List<User> getAllData();
-
     String deleteData(long id);
-
     User getData(long id);
-
     User updateData(long id, User entity);
 }

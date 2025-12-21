@@ -2,13 +2,10 @@ package com.example.demo.controller;
 
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
-import com.example.demo.util.JwtUtil;
 
 @RestController
 @RequestMapping
@@ -17,9 +14,9 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private JwtUtil jwtUtil;
-
+    /* =====================
+       Auth endpoints
+       ===================== */
     @PostMapping("/auth/register")
     public User register(@RequestBody Map<String, String> request) {
         String name = request.get("name");
@@ -33,17 +30,21 @@ public class AuthController {
         String email = request.get("email");
         String password = request.get("password");
 
-        User user = userService.findByEmail(email);
-
-        if (user == null || !user.getPassword().equals(password)) {
+        User user = userService.login(email, password);
+        if (user == null) {
             return Map.of("error", "Invalid credentials");
         }
-
-        String token = jwtUtil.generateToken(email);
-
-        return Map.of("token", token);
+        return Map.of(
+            "id", user.getId().toString(),
+            "name", user.getFullName(),
+            "email", user.getEmail(),
+            "role", user.getRole().toString()
+        );
     }
 
+    /* =====================
+       CRUD endpoints
+       ===================== */
     @PostMapping("/users/post")
     public User postUser(@RequestBody User user) {
         return userService.postData(user);
