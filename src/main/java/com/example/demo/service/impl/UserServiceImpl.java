@@ -2,6 +2,7 @@ package com.example.demo.service.impl;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,25 +15,22 @@ import com.example.demo.util.JwtUtil;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final JwtUtil jwtUtil; 
+    @Autowired
+    private UserRepository userRepository;
 
-    public UserServiceImpl(UserRepository userRepository,
-                           PasswordEncoder passwordEncoder,
-                           JwtUtil jwtUtil) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtUtil = jwtUtil;
-    }
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtUtil jwtUtil; 
 
 
     @Override
     public User registerCustomer(String name, String email, String rawPassword) {
 
-        userRepository.findByEmail(email).ifPresent(u -> {
+        if (userRepository.findByEmail(email).isPresent()) {
             throw new RuntimeException("email already exists");
-        });
+        }
 
         User user = new User();
         user.setFullName(name);
@@ -45,7 +43,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByEmail(String email) {
-        return userRepository.findByEmail(email).orElse(null);
+        if (userRepository.findByEmail(email).isPresent()) {
+            return userRepository.findByEmail(email).get();
+        }
+        return null;
     }
 
     @Override
@@ -66,7 +67,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getData(long id) {
-        return userRepository.findById(id).orElse(null);
+        if (userRepository.findById(id).isPresent()) {
+            return userRepository.findById(id).get();
+        }
+        return null;
     }
 
     @Override
