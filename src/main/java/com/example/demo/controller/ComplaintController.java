@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.entity.Complaint;
@@ -12,36 +11,29 @@ import com.example.demo.service.ComplaintService;
 @RequestMapping("/complaints")
 public class ComplaintController {
 
-    @Autowired
-    ComplaintService service;
+    private ComplaintService complaintService;
 
-    @PostMapping("/post")
-    public Complaint postComplaint(@RequestBody Complaint complaint) {
-        return service.postData(complaint);
+    public ComplaintController(ComplaintService complaintService) {
+        this.complaintService = complaintService;
     }
 
-    @GetMapping("/get")
-    public List<Complaint> getAllComplaints() {
-        return service.getAllData();
+    @PostMapping("/submit")
+    public Complaint submitComplaint(@RequestBody Complaint complaint, @RequestParam Long customerId) {
+        return complaintService.submitComplaint(complaint, customerId);
     }
 
-    @GetMapping("/get/{id}")
-    public Complaint getComplaintById(@PathVariable Long id) {
-        return service.getDataById(id);
-    }
-
-    @PutMapping("/put/{id}")
-    public Complaint updateComplaint(@PathVariable Long id, @RequestBody Complaint complaint) {
-        return service.updateData(id, complaint);
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public String deleteComplaint(@PathVariable Long id) {
-        return service.deleteData(id);
+    @GetMapping("/user/{customerId}")
+    public List<Complaint> getUserComplaints(@PathVariable Long customerId) {
+        return complaintService.getComplaintsForUser(customerId);
     }
 
     @GetMapping("/prioritized")
-    public List<Complaint> getPrioritized() {
-        return service.getPrioritizedComplaints();
+    public List<Complaint> getPrioritizedComplaints() {
+        return complaintService.getPrioritizedComplaints();
+    }
+
+    @PutMapping("/status/{id}")
+    public Complaint changeComplaintStatus(@PathVariable Long id, @RequestParam Complaint.Status status) {
+        return complaintService.updateStatus(id, status);
     }
 }
