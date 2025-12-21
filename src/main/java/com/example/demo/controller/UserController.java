@@ -32,7 +32,7 @@ public class UserController{
         return ser.getData(id);
     }
     @PutMapping("/put/{id}")
-    public User putVal(@PathVariable long id,@RequestBody StudentEntity entity){
+    public User putVal(@PathVariable long id,@RequestBody User entity){
         return ser.updateData(id,User);
     }
 }
