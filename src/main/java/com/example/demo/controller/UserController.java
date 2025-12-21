@@ -9,30 +9,30 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import com.example.demo.entity.StudentEntity;
+import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
 @RestController
-public class StudentController{
-    @Autowired StudentService ser;
+public class UserController{
+    @Autowired UserService ser;
     @PostMapping("/post")
     
-    public StudentEntity sendData(@RequestBody StudentEntity  stu){
+    public User sendData(@RequestBody User  stu){
         return ser.postData(stu);
     }
     @GetMapping("/get")
-    public List<StudentEntity> getData(){
+    public List<User> getData(){
         return ser.getAllData();
     }
     @DeleteMapping("/delete/{id}")
-    public String deleteVal(@PathVariable int id){
+    public String deleteVal(@PathVariable long id){
         return ser.DeleteData(id);
     }
     @GetMapping("/getid/{id}")
-    public StudentEntity getDataId(@PathVariable int id){
+    public User getDataId(@PathVariable long id){
         return ser.getData(id);
     }
     @PutMapping("/put/{id}")
-    public StudentEntity putVal(@PathVariable int id,@RequestBody StudentEntity entity){
-        return ser.updateData(id,entity);
+    public User putVal(@PathVariable long id,@RequestBody StudentEntity entity){
+        return ser.updateData(id,User);
     }
 }
