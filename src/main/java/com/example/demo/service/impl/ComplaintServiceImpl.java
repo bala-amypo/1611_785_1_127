@@ -1,4 +1,4 @@
-package com.example.demo.service.impl;
+package com.example.demo.service;
 
 import java.util.List;
 
@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Complaint;
 import com.example.demo.repository.ComplaintRepository;
-import com.example.demo.service.ComplaintService;
 
 @Service
 public class ComplaintServiceImpl implements ComplaintService {
@@ -26,28 +25,24 @@ public class ComplaintServiceImpl implements ComplaintService {
     }
 
     @Override
-    public Complaint getData(Long id) {
+    public Complaint getDataById(Long id) {
         return repo.findById(id).orElse(null);
+    }
+
+    @Override
+    public Complaint updateData(Long id, Complaint complaint) {
+        Complaint existing = repo.findById(id).orElse(null);
+        if (existing == null) {
+            return null;
+        }
+        complaint.setId(id);
+        return repo.save(complaint);
     }
 
     @Override
     public String deleteData(Long id) {
         repo.deleteById(id);
-        return "Deleted Successfully";
-    }
-
-    @Override
-    public Complaint updateData(Long id, Complaint complaint) {
-        if (repo.existsById(id)) {
-            complaint.setId(id);
-            return repo.save(complaint);
-        }
-        return null;
-    }
-
-    @Override
-    public List<Complaint> getComplaintsByCustomer(Long customerId) {
-        return repo.findByCustomerId(customerId);
+        return "Complaint Deleted";
     }
 
     @Override

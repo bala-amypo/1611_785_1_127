@@ -13,40 +13,35 @@ import com.example.demo.service.ComplaintService;
 public class ComplaintController {
 
     @Autowired
-    ComplaintService ser;
+    ComplaintService service;
 
     @PostMapping("/post")
-    public Complaint sendData(@RequestBody Complaint complaint) {
-        return ser.postData(complaint);
+    public Complaint postComplaint(@RequestBody Complaint complaint) {
+        return service.postData(complaint);
     }
 
     @GetMapping("/get")
-    public List<Complaint> getAll() {
-        return ser.getAllData();
+    public List<Complaint> getAllComplaints() {
+        return service.getAllData();
     }
 
-    @GetMapping("/getid/{id}")
-    public Complaint getById(@PathVariable Long id) {
-        return ser.getData(id);
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public String deleteVal(@PathVariable Long id) {
-        return ser.deleteData(id);
+    @GetMapping("/get/{id}")
+    public Complaint getComplaintById(@PathVariable Long id) {
+        return service.getDataById(id);
     }
 
     @PutMapping("/put/{id}")
-    public Complaint updateVal(@PathVariable Long id, @RequestBody Complaint complaint) {
-        return ser.updateData(id, complaint);
+    public Complaint updateComplaint(@PathVariable Long id, @RequestBody Complaint complaint) {
+        return service.updateData(id, complaint);
     }
 
-    @GetMapping("/customer/{customerId}")
-    public List<Complaint> getByCustomer(@PathVariable Long customerId) {
-        return ser.getComplaintsByCustomer(customerId);
+    @DeleteMapping("/delete/{id}")
+    public String deleteComplaint(@PathVariable Long id) {
+        return service.deleteData(id);
     }
 
     @GetMapping("/prioritized")
     public List<Complaint> getPrioritized() {
-        return ser.getPrioritizedComplaints();
+        return service.getPrioritizedComplaints();
     }
 }
