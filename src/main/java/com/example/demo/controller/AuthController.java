@@ -13,10 +13,6 @@ public class AuthController {
 
     @Autowired
     private UserService userService;
-
-    /* =====================
-       Auth endpoints
-       ===================== */
     @PostMapping("/auth/register")
     public User register(@RequestBody Map<String, String> request) {
         String name = request.get("name");
@@ -41,10 +37,6 @@ public class AuthController {
             "role", user.getRole().toString()
         );
     }
-
-    /* =====================
-       CRUD endpoints
-       ===================== */
     @PostMapping("/users/post")
     public User postUser(@RequestBody User user) {
         return userService.postData(user);
