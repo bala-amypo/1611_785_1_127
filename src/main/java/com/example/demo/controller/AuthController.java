@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.entity.User;
@@ -13,72 +12,72 @@ import com.example.demo.service.UserService;
 @RequestMapping("/auth")
 public class AuthController {
 
-    @Autowired
-    private UserService service;
+    private UserService userService;
+
+    // ✅ Constructor Injection
+    public AuthController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/register")
-public Object register(@RequestBody Map<String, String> req) {
+    public Object register(@RequestBody Map<String, String> request) {
 
-    String name = req.get("name");
-    String email = req.get("email");
-    String password = req.get("password");
+        String name = request.get("name");
+        String email = request.get("email");
+        String password = request.get("password");
 
-    if (name == null || email == null || password == null) {
-        return Map.of("message", "All fields are required");
+        if (name == null || email == null || password == null) {
+            return Map.of("message", "All fields are required");
+        }
+
+        User user = userService.registerCustomer(name, email, password);
+
+        if (user == null) {
+            return Map.of("message", "Email already exists");
+        }
+
+        return user;
     }
-
-    User user = service.registerCustomer(name, email, password);
-
-    if (user == null) {
-        return Map.of("message", "Email already exists");
-    }
-
-    return user;
-}
-
 
     @PostMapping("/login")
-    public Object login(@RequestBody Map<String, String> req) {
+    public Object login(@RequestBody Map<String, String> request) {
 
-        User user = service.login(
-                req.get("email"),
-                req.get("password")
-        );
+        String email = request.get("email");
+        String password = request.get("password");
+
+        User user = userService.login(email, password);
 
         if (user == null) {
             return Map.of("message", "Invalid credentials");
         }
 
-        return Map.of(
-                "id", user.getId(),
-                "name", user.getFullName(),
-                "email", user.getEmail(),
-                "role", user.getRole()
-        );
+        return user;
     }
 
+    /* ---------- CRUD ---------- */
+
     @PostMapping("/users/post")
-    public User post(@RequestBody User user) {
-        return service.postData(user);
+    public User postUser(@RequestBody User user) {
+        return userService.postData(user);
     }
 
     @GetMapping("/users/get")
-    public List<User> getAll() {
-        return service.getAllData();
+    public List<User> getAllUsers() {
+        return userService.getAllData();
     }
 
     @GetMapping("/users/getid/{id}")
-    public User getById(@PathVariable long id) {
-        return service.getData(id);
+    public User getUserById(@PathVariable long id) {
+        return userService.getData(id);
     }
 
     @PutMapping("/users/put/{id}")
-    public User update(@PathVariable long id, @RequestBody User user) {
-        return service.updateData(id, user);
+    public User updateUser(@PathVariable long id, @RequestBody User entity) {
+        return userService.updateData(id, entity);
     }
 
     @DeleteMapping("/users/delete/{id}")
-    public String delete(@PathVariable long id) {
-        return service.deleteData(id);
+    public String deleteUser(@PathVariable long id) {
+        return userService.deleteData(id);
     }
 }

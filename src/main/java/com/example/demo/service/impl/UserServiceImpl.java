@@ -2,7 +2,6 @@ package com.example.demo.service.impl;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.User;
@@ -13,13 +12,23 @@ import com.example.demo.service.UserService;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository repo;
+    private UserRepository userRepository;
+
+    // ✅ Constructor Injection
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    /* ---------- AUTH ---------- */
 
     @Override
     public User registerCustomer(String name, String email, String password) {
 
-        if (repo.findByEmail(email).isPresent()) {
+        if (email == null) {
+            return null;
+        }
+
+        if (userRepository.findByEmail(email).isPresent()) {
             return null;
         }
 
@@ -29,13 +38,13 @@ public class UserServiceImpl implements UserService {
         user.setPassword(password);
         user.setRole(Role.CUSTOMER);
 
-        return repo.save(user);
+        return userRepository.save(user);
     }
 
     @Override
     public User login(String email, String password) {
 
-        User user = repo.findByEmail(email).orElse(null);
+        User user = userRepository.findByEmail(email).orElse(null);
 
         if (user != null && user.getPassword().equals(password)) {
             return user;
@@ -43,36 +52,35 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    /* ---------- CRUD ---------- */
+
     @Override
     public User postData(User user) {
-        return repo.save(user);
+        return userRepository.save(user);
     }
 
     @Override
     public List<User> getAllData() {
-        return repo.findAll();
-    }
-
-    @Override
-    public User getData(long id) {
-        return repo.findById(id).orElse(null);
-    }
-
-    @Override
-    public User updateData(long id, User entity) {
-        if (repo.existsById(id)) {
-            entity.setId(id);
-            return repo.save(entity);
-        }
-        return null;
+        return userRepository.findAll();
     }
 
     @Override
     public String deleteData(long id) {
-        if (repo.existsById(id)) {
-            repo.deleteById(id);
-            return "Deleted Successfully";
+        userRepository.deleteById(id);
+        return "Deleted Successfully";
+    }
+
+    @Override
+    public User getData(long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public User updateData(long id, User entity) {
+        if (userRepository.existsById(id)) {
+            entity.setId(id);
+            return userRepository.save(entity);
         }
-        return "User Not Found";
+        return null;
     }
 }
