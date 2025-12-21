@@ -1,55 +1,52 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.Complaint;
-import com.example.demo.service.ComplaintService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import com.example.demo.entity.Complaint;
+import com.example.demo.service.ComplaintService;
 
 @RestController
 @RequestMapping("/complaints")
 public class ComplaintController {
 
     @Autowired
-    private ComplaintService complaintService;
+    ComplaintService ser;
 
-    @PostMapping("/submit")
-    public ResponseEntity<Complaint> submitComplaint(@RequestBody ComplaintRequest request) {
-        Complaint complaint = complaintService.submitComplaint(request);
-        return ResponseEntity.ok(complaint);
+    @PostMapping("/cpost")
+    public Complaint csendData(@RequestBody Complaint complaint) {
+        return ser.cpostData(complaint);
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Complaint>> getUserComplaints(@PathVariable Long userId) {
-        List<Complaint> complaints = complaintService.getUserComplaints(userId);
-        return ResponseEntity.ok(complaints);
+    @GetMapping("/cget")
+    public List<Complaint> cgetAll() {
+        return ser.cgetAllData();
     }
 
-    @GetMapping("/prioritized")
-    public ResponseEntity<List<Complaint>> getPrioritizedComplaints() {
-        List<Complaint> complaints = complaintService.getPrioritizedComplaints();
-        return ResponseEntity.ok(complaints);
+    @GetMapping("/cgetid/{id}")
+    public Complaint cgetById(@PathVariable Long id) {
+        return ser.cgetData(id);
     }
 
-    @PutMapping("/status/{id}")
-    public ResponseEntity<Complaint> updateComplaintStatus(@PathVariable Long id,
-                                                           @RequestBody StatusUpdateRequest request) {
-        Complaint updatedComplaint = complaintService.updateStatus(id, request.status);
-        return ResponseEntity.ok(updatedComplaint);
+    @DeleteMapping("/cdelete/{id}")
+    public String deleteVal(@PathVariable Long id) {
+        return ser.deleteData(id);
     }
 
-    // DTO for updating status
-    public static class StatusUpdateRequest {
-        private Complaint.Status status;
+    @PutMapping("/cput/{id}")
+    public Complaint updateVal(@PathVariable Long id, @RequestBody Complaint complaint) {
+        return ser.updateData(id, complaint);
+    }
 
-        public Complaint.Status getStatus() {
-            return status;
-        }
+    @GetMapping("/ccustomer/{customerId}")
+    public List<Complaint> getByCustomer(@PathVariable Long customerId) {
+        return ser.getComplaintsByCustomer(customerId);
+    }
 
-        public void setStatus(Complaint.Status status) {
-            this.status = status;
-        }
+    @GetMapping("/cprioritized")
+    public List<Complaint> getPrioritized() {
+        return ser.getPrioritizedComplaints();
     }
 }
