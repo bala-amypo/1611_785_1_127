@@ -14,8 +14,7 @@ public class PriorityRule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name; // rule name
     private String category;
-    private boolean active; // true or false
-    private int score; // score to add if rule applies
+    private int weight;
+    private boolean active;
 }
