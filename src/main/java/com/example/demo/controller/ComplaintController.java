@@ -15,38 +15,38 @@ public class ComplaintController {
     @Autowired
     ComplaintService ser;
 
-    @PostMapping("/cpost")
-    public Complaint csendData(@RequestBody Complaint complaint) {
-        return ser.cpostData(complaint);
+    @PostMapping("/post")
+    public Complaint sendData(@RequestBody Complaint complaint) {
+        return ser.postData(complaint);
     }
 
-    @GetMapping("/cget")
-    public List<Complaint> cgetAll() {
+    @GetMapping("/get")
+    public List<Complaint> getAll() {
         return ser.getAllData();
     }
 
-    @GetMapping("/cgetid/{id}")
-    public Complaint cgetById(@PathVariable Long id) {
+    @GetMapping("/getid/{id}")
+    public Complaint getById(@PathVariable Long id) {
         return ser.getData(id);
     }
 
-    @DeleteMapping("/cdelete/{id}")
-    public String cdeleteVal(@PathVariable Long id) {
+    @DeleteMapping("/delete/{id}")
+    public String deleteVal(@PathVariable Long id) {
         return ser.deleteData(id);
     }
 
-    @PutMapping("/cput/{id}")
-    public Complaint cupdateVal(@PathVariable Long id, @RequestBody Complaint complaint) {
+    @PutMapping("/put/{id}")
+    public Complaint updateVal(@PathVariable Long id, @RequestBody Complaint complaint) {
         return ser.updateData(id, complaint);
     }
 
-    @GetMapping("/ccustomer/{customerId}")
-    public List<Complaint> cgetByCustomer(@PathVariable Long customerId) {
+    @GetMapping("/customer/{customerId}")
+    public List<Complaint> getByCustomer(@PathVariable Long customerId) {
         return ser.getComplaintsByCustomer(customerId);
     }
 
-    @GetMapping("/cprioritized")
-    public List<Complaint> cgetPrioritized() {
+    @GetMapping("/prioritized")
+    public List<Complaint> getPrioritized() {
         return ser.getPrioritizedComplaints();
     }
 }
