@@ -33,6 +33,6 @@ public class DigitalComplaintPrioritizationEngine {
     private Severity severity;
     private Urgency urgency;
     private User customer; 
-    private User assignedAgent; // ManyToOne
-    private Set<PriorityRule> priorityRules; // ManyToMany
+    private User assignedAgent; 
+    private Set<PriorityRule> priorityRules;
 }
