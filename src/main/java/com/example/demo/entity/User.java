@@ -22,13 +22,13 @@ public class User {
     private Long id;
 
     @Column(name = "full_name", nullable = false)
-    private String fullName; // or name if your test expects "name"
+    private String fullName; 
 
     @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
-    private String password; // must be stored as encoded (hashed)
+    private String password; 
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
