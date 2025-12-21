@@ -1,39 +1,21 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-
-import java.util.Set;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "priority_rules")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class PriorityRule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String ruleName;
-
-    @Column(length = 1000)
-    private String description;
-
-    @Column(nullable = false)
-    private Integer weight; 
-
-    @Column(nullable = false)
-    private boolean active;
-
-   
-
-    @PrePersist
-    protected void onCreate() {
-        this.active = true; // default active = true
-    }
+    private String name; // rule name
+    private String category;
+    private boolean active; // true or false
+    private int score; // score to add if rule applies
 }
