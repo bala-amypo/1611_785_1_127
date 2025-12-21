@@ -8,12 +8,12 @@ import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
 
 @RestController
-@RequestMapping
+@RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
     private UserService userService;
-    @PostMapping("/auth/register")
+    @PostMapping("/register")
     public User register(@RequestBody Map<String, String> request) {
         String name = request.get("name");
         String email = request.get("email");
@@ -21,7 +21,7 @@ public class AuthController {
         return userService.registerCustomer(name, email, password);
     }
 
-    @PostMapping("/auth/login")
+    @PostMapping("/login")
     public Map<String, String> login(@RequestBody Map<String, String> request) {
         String email = request.get("email");
         String password = request.get("password");
