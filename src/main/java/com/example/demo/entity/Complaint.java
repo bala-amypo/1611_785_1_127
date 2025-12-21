@@ -35,7 +35,7 @@ public class Complaint {
     private Integer priorityScore;
 
     @Column(nullable = false, updatable = false)
-    private LocalDateTime submittedOn; // or createdAt if your test expects that name
+    private LocalDateTime submittedOn; 
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -49,35 +49,14 @@ public class Complaint {
     @Column(nullable = false)
     private Urgency urgency;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", nullable = false)
-    private User customer;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "agent_id")
-    private User assignedAgent;
-
-    @ManyToMany
-    @JoinTable(
-        name = "complaint_priority_rules",
-        joinColumns = @JoinColumn(name = "complaint_id"),
-        inverseJoinColumns = @JoinColumn(name = "priority_rule_id")
-    )
-    private Set<PriorityRule> priorityRules;
-
-    /* =========================
-       Lifecycle Callbacks
-       ========================= */
+    
 
     @PrePersist
     protected void onCreate() {
         this.submittedOn = LocalDateTime.now();
-        this.status = Status.NEW; // default status
+        this.status = Status.NEW; 
     }
 
-    /* =========================
-       Enums
-       ========================= */
 
     public enum Status {
         NEW,

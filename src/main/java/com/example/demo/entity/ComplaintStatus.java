@@ -18,10 +18,7 @@ public class ComplaintStatus {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "complaint_id", nullable = false)
-    private Complaint complaint;
-
+   
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Status status;
