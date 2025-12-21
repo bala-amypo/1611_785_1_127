@@ -17,19 +17,25 @@ public class AuthController {
     private UserService service;
 
     @PostMapping("/register")
-    public Object register(@RequestBody Map<String, String> req) {
+public Object register(@RequestBody Map<String, String> req) {
 
-        User user = service.registerCustomer(
-                req.get("name"),
-                req.get("email"),
-                req.get("password")
-        );
+    String name = req.get("name");
+    String email = req.get("email");
+    String password = req.get("password");
 
-        if (user == null) {
-            return Map.of("message", "Email already exists");
-        }
-        return user;
+    if (name == null || email == null || password == null) {
+        return Map.of("message", "All fields are required");
     }
+
+    User user = service.registerCustomer(name, email, password);
+
+    if (user == null) {
+        return Map.of("message", "Email already exists");
+    }
+
+    return user;
+}
+
 
     @PostMapping("/login")
     public Object login(@RequestBody Map<String, String> req) {
