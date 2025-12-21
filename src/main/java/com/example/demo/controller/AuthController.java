@@ -57,8 +57,6 @@ public Object register(@RequestBody Map<String, String> req) {
         );
     }
 
-    /* CRUD */
-
     @PostMapping("/users/post")
     public User post(@RequestBody User user) {
         return service.postData(user);
