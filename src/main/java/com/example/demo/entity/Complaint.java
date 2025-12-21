@@ -29,15 +29,10 @@ public class Complaint {
     private Long id;
 
     private String title;
-
     private String description;
-
     private String category;
-
     private String channel;
-
     private Integer priorityScore;
-
     private LocalDateTime createdAt;
 
     @Enumerated(EnumType.STRING)
@@ -48,11 +43,6 @@ public class Complaint {
 
     @Enumerated(EnumType.STRING)
     private Urgency urgency;
-
-    // 🔹 Simple fields instead of relationships
-    private Long customerId;
-
-    private Long assignedAgentId;
 
     @PrePersist
     public void onCreate() {
