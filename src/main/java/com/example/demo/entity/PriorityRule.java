@@ -15,6 +15,8 @@ public class PriorityRule {
     private Long id;
 
     private String category;
+
     private int weight;
+
     private boolean active;
 }

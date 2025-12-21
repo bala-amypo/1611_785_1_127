@@ -17,7 +17,6 @@ public class PriorityRuleServiceImpl implements PriorityRuleService {
 
     @Override
     public int computePriorityScore(int severity, int urgency) {
-        // Simple computation: severity + urgency + sum of active rule weights
         int score = severity + urgency;
         List<PriorityRule> rules = priorityRuleRepository.findByActiveTrue();
         for (PriorityRule rule : rules) {
