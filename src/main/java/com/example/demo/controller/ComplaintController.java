@@ -2,44 +2,46 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.entity.Complaint;
-import com.example.demo.entity.User;
 import com.example.demo.service.ComplaintService;
 
 @RestController
 @RequestMapping("/complaints")
 public class ComplaintController {
 
-    private ComplaintService complaintService;
+    @Autowired
+    ComplaintService service;
 
-    // ✅ Constructor Injection
-    public ComplaintController(ComplaintService complaintService) {
-        this.complaintService = complaintService;
+    @PostMapping("/post")
+    public Complaint postComplaint(@RequestBody Complaint complaint) {
+        return service.postData(complaint);
     }
 
-    @PostMapping("/submit")
-    public Complaint submitComplaint(@RequestBody Complaint complaint, @RequestParam Long userId) {
-        User customer = new User();
-        customer.setId(userId);
-        return complaintService.submitComplaint(complaint, customer);
+    @GetMapping("/get")
+    public List<Complaint> getAllComplaints() {
+        return service.getAllData();
     }
 
-    @GetMapping("/user/{userId}")
-    public List<Complaint> getUserComplaints(@PathVariable Long userId) {
-        User customer = new User();
-        customer.setId(userId);
-        return complaintService.getComplaintsForUser(customer);
+    @GetMapping("/get/{id}")
+    public Complaint getComplaintById(@PathVariable Long id) {
+        return service.getDataById(id);
+    }
+
+    @PutMapping("/put/{id}")
+    public Complaint updateComplaint(@PathVariable Long id, @RequestBody Complaint complaint) {
+        return service.updateData(id, complaint);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public String deleteComplaint(@PathVariable Long id) {
+        return service.deleteData(id);
     }
 
     @GetMapping("/prioritized")
-    public List<Complaint> getPrioritizedComplaints() {
-        return complaintService.getPrioritizedComplaints();
-    }
-
-    @PutMapping("/status/{id}")
-    public Complaint changeComplaintStatus(@PathVariable Long id, @RequestParam Complaint.Status status) {
-        return complaintService.updateStatus(id, status);
+    public List<Complaint> getPrioritized() {
+        return service.getPrioritizedComplaints();
     }
 }
