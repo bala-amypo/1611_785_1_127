@@ -1,16 +1,17 @@
-package com.example.demo.repository;
-
-import com.example.demo.entity.Complaint;
-import com.example.demo.entity.User;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+package com.example.demo.service;
 
 import java.util.List;
+import com.example.demo.entity.Complaint;
 
-@Repository
-public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
+public interface ComplaintService {
 
-    List<Complaint> findByCustomer(User customer);
+    Complaint postData(Complaint complaint);
 
-    List<Complaint> findAllByOrderByPriorityScoreDescCreatedAtAsc();
+    List<Complaint> getAllData();
+
+    Complaint getData(Long id);
+
+    Complaint updateData(Long id, Complaint complaint);
+
+    String deleteData(Long id);
 }
