@@ -2,7 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Complaint;
 import com.example.demo.service.ComplaintService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,10 +10,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/complaints")
-@RequiredArgsConstructor
 public class ComplaintController {
 
-    private final ComplaintService complaintService;
+    @Autowired
+    private ComplaintService complaintService;
 
     // Submit a new complaint
     @PostMapping("/submit")
@@ -40,7 +40,7 @@ public class ComplaintController {
     @PutMapping("/status/{id}")
     public ResponseEntity<Complaint> updateComplaintStatus(@PathVariable Long id,
                                                            @RequestBody StatusUpdateRequest request) {
-        Complaint updatedComplaint = complaintService.updateStatus(id, request.getStatus());
+        Complaint updatedComplaint = complaintService.updateStatus(id, request.status);
         return ResponseEntity.ok(updatedComplaint);
     }
 
