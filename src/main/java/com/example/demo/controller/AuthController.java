@@ -2,8 +2,10 @@ package com.example.demo.controller;
 
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
 
@@ -12,53 +14,67 @@ import com.example.demo.service.UserService;
 public class AuthController {
 
     @Autowired
-    private UserService userService;
+    private UserService service;
+
     @PostMapping("/register")
-    public User register(@RequestBody Map<String, String> request) {
-        String name = request.get("name");
-        String email = request.get("email");
-        String password = request.get("password");
-        return userService.registerCustomer(name, email, password);
+    public Object register(@RequestBody Map<String, String> req) {
+
+        User user = service.registerCustomer(
+                req.get("name"),
+                req.get("email"),
+                req.get("password")
+        );
+
+        if (user == null) {
+            return Map.of("message", "Email already exists");
+        }
+        return user;
     }
 
     @PostMapping("/login")
-    public Map<String, String> login(@RequestBody Map<String, String> request) {
-        String email = request.get("email");
-        String password = request.get("password");
+    public Object login(@RequestBody Map<String, String> req) {
 
-        User user = userService.login(email, password);
+        User user = service.login(
+                req.get("email"),
+                req.get("password")
+        );
+
         if (user == null) {
-            return Map.of("error", "Invalid credentials");
+            return Map.of("message", "Invalid credentials");
         }
+
         return Map.of(
-            "id", user.getId().toString(),
-            "name", user.getFullName(),
-            "email", user.getEmail(),
-            "role", user.getRole().toString()
+                "id", user.getId(),
+                "name", user.getFullName(),
+                "email", user.getEmail(),
+                "role", user.getRole()
         );
     }
+
+    /* CRUD */
+
     @PostMapping("/users/post")
-    public User postUser(@RequestBody User user) {
-        return userService.postData(user);
+    public User post(@RequestBody User user) {
+        return service.postData(user);
     }
 
     @GetMapping("/users/get")
-    public List<User> getAllUsers() {
-        return userService.getAllData();
+    public List<User> getAll() {
+        return service.getAllData();
     }
 
     @GetMapping("/users/getid/{id}")
-    public User getUserById(@PathVariable long id) {
-        return userService.getData(id);
+    public User getById(@PathVariable long id) {
+        return service.getData(id);
     }
 
     @PutMapping("/users/put/{id}")
-    public User updateUser(@PathVariable long id, @RequestBody User entity) {
-        return userService.updateData(id, entity);
+    public User update(@PathVariable long id, @RequestBody User user) {
+        return service.updateData(id, user);
     }
 
     @DeleteMapping("/users/delete/{id}")
-    public String deleteUser(@PathVariable long id) {
-        return userService.deleteData(id);
+    public String delete(@PathVariable long id) {
+        return service.deleteData(id);
     }
 }
