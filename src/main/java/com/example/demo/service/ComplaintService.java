@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.util.List;
+
 import com.example.demo.entity.Complaint;
 
 public interface ComplaintService {
@@ -11,7 +12,11 @@ public interface ComplaintService {
 
     Complaint getData(Long id);
 
+    String deleteData(Long id);
+
     Complaint updateData(Long id, Complaint complaint);
 
-    String deleteData(Long id);
+    List<Complaint> getComplaintsByCustomer(Long customerId);
+
+    List<Complaint> getPrioritizedComplaints();
 }

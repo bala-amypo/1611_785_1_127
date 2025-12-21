@@ -1,11 +1,13 @@
-package com.example.demo.service;
+package com.example.demo.service.impl;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Complaint;
 import com.example.demo.repository.ComplaintRepository;
+import com.example.demo.service.ComplaintService;
 
 @Service
 public class ComplaintServiceImpl implements ComplaintService {
@@ -29,9 +31,14 @@ public class ComplaintServiceImpl implements ComplaintService {
     }
 
     @Override
+    public String deleteData(Long id) {
+        repo.deleteById(id);
+        return "Deleted Successfully";
+    }
+
+    @Override
     public Complaint updateData(Long id, Complaint complaint) {
-        Complaint existing = repo.findById(id).orElse(null);
-        if (existing != null) {
+        if (repo.existsById(id)) {
             complaint.setId(id);
             return repo.save(complaint);
         }
@@ -39,8 +46,12 @@ public class ComplaintServiceImpl implements ComplaintService {
     }
 
     @Override
-    public String deleteData(Long id) {
-        repo.deleteById(id);
-        return "Complaint deleted successfully";
+    public List<Complaint> getComplaintsByCustomer(Long customerId) {
+        return repo.findByCustomerId(customerId);
+    }
+
+    @Override
+    public List<Complaint> getPrioritizedComplaints() {
+        return repo.findAllByOrderByPriorityScoreDescCreatedAtAsc();
     }
 }
