@@ -17,5 +17,5 @@ public class PriorityRule {
     private String ruleName;
     private String description;
     private Integer weight;
-    private boolean active = true; // default true
+    private boolean active = true;
 }
