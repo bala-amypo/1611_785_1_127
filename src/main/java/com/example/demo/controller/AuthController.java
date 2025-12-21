@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
 @RestController
-public class UserController{
+public class AuthController{
     @Autowired UserService ser;
     @PostMapping("/post")
     
