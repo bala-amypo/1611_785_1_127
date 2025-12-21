@@ -22,31 +22,31 @@ public class ComplaintController {
 
     @GetMapping("/cget")
     public List<Complaint> cgetAll() {
-        return ser.cgetAllData();
+        return ser.getAllData();
     }
 
     @GetMapping("/cgetid/{id}")
     public Complaint cgetById(@PathVariable Long id) {
-        return ser.cgetData(id);
+        return ser.getData(id);
     }
 
     @DeleteMapping("/cdelete/{id}")
-    public String deleteVal(@PathVariable Long id) {
+    public String cdeleteVal(@PathVariable Long id) {
         return ser.deleteData(id);
     }
 
     @PutMapping("/cput/{id}")
-    public Complaint updateVal(@PathVariable Long id, @RequestBody Complaint complaint) {
+    public Complaint cupdateVal(@PathVariable Long id, @RequestBody Complaint complaint) {
         return ser.updateData(id, complaint);
     }
 
     @GetMapping("/ccustomer/{customerId}")
-    public List<Complaint> getByCustomer(@PathVariable Long customerId) {
+    public List<Complaint> cgetByCustomer(@PathVariable Long customerId) {
         return ser.getComplaintsByCustomer(customerId);
     }
 
     @GetMapping("/cprioritized")
-    public List<Complaint> getPrioritized() {
+    public List<Complaint> cgetPrioritized() {
         return ser.getPrioritizedComplaints();
     }
 }
