@@ -1,12 +1,12 @@
-package com.example.demo.repository;
+// package com.example.demo.repository;
 
-import java.util.List;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-import com.example.demo.entity.PriorityRule;
+// import java.util.List;
+// import org.springframework.data.jpa.repository.JpaRepository;
+// import org.springframework.stereotype.Repository;
+// import com.example.demo.entity.PriorityRule;
 
-@Repository
-public interface PriorityRuleRepository extends JpaRepository<PriorityRule, Long> {
-    List<PriorityRule> findByActiveTrue();
-    PriorityRule findByCategory(String category);
-}
+// @Repository
+// public interface PriorityRuleRepository extends JpaRepository<PriorityRule, Long> {
+//     List<PriorityRule> findByActiveTrue();
+//     PriorityRule findByCategory(String category);
+// }
