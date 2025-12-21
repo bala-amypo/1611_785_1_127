@@ -15,28 +15,24 @@ public class ComplaintController {
     @Autowired
     private ComplaintService complaintService;
 
-    // Submit a new complaint
     @PostMapping("/submit")
     public ResponseEntity<Complaint> submitComplaint(@RequestBody ComplaintRequest request) {
         Complaint complaint = complaintService.submitComplaint(request);
         return ResponseEntity.ok(complaint);
     }
 
-    // Get complaints for a specific user
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Complaint>> getUserComplaints(@PathVariable Long userId) {
         List<Complaint> complaints = complaintService.getUserComplaints(userId);
         return ResponseEntity.ok(complaints);
     }
 
-    // Get all complaints prioritized by priorityScore DESC, createdAt ASC
     @GetMapping("/prioritized")
     public ResponseEntity<List<Complaint>> getPrioritizedComplaints() {
         List<Complaint> complaints = complaintService.getPrioritizedComplaints();
         return ResponseEntity.ok(complaints);
     }
 
-    // Update the status of a complaint
     @PutMapping("/status/{id}")
     public ResponseEntity<Complaint> updateComplaintStatus(@PathVariable Long id,
                                                            @RequestBody StatusUpdateRequest request) {
