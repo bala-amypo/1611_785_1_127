@@ -1,42 +1,33 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+import java.io.Serializable;
+import javax.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
-@Table(
-    name = "users",
-    uniqueConstraints = {
-        @UniqueConstraint(columnNames = "email")
-    }
-)
+@Table(name = "users")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class User {
+public class User implements Serializable {
+
+    public enum Role {
+        CUSTOMER, AGENT, ADMIN
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "full_name", nullable = false)
-    private String fullName; 
+    @Column(nullable = false)
+    private String fullName;
 
     @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
-    private String password; 
+    private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private Role role;
-
-    public enum Role {
-        CUSTOMER,
-        AGENT,
-        ADMIN
-    }
 }
