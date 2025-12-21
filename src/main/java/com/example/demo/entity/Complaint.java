@@ -44,13 +44,9 @@ public class Complaint {
     @Enumerated(EnumType.STRING)
     private Urgency urgency;
 
-    private Long customerId; // instead of ManyToOne User
-    private Long assignedAgentId; // instead of ManyToOne User
-
     @PrePersist
     public void onCreate() {
         this.createdAt = LocalDateTime.now();
         this.status = Status.NEW;
-        if (this.priorityScore == null) this.priorityScore = 0; // default
     }
 }
