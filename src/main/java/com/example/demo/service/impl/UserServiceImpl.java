@@ -15,7 +15,7 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     /* =====================
-       Auth methods
+       Auth
        ===================== */
     @Override
     public User registerCustomer(String name, String email, String rawPassword) {
@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setFullName(name);
         user.setEmail(email);
-        user.setPassword(rawPassword); // plain text
+        user.setPassword(rawPassword); // plain text for simplicity
         user.setRole(Role.CUSTOMER);
 
         return userRepository.save(user);
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /* =====================
-       CRUD methods
+       CRUD
        ===================== */
     @Override
     public User postData(User user) {
