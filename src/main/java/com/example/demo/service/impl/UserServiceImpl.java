@@ -3,14 +3,12 @@ package com.example.demo.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.User;
 import com.example.demo.entity.User.Role;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
-import com.example.demo.util.JwtUtil;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -18,12 +16,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private JwtUtil jwtUtil; 
-
+    /* =====================
+       Test-required methods
+       ===================== */
 
     @Override
     public User registerCustomer(String name, String email, String rawPassword) {
@@ -35,7 +30,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setFullName(name);
         user.setEmail(email);
-        user.setPassword(passwordEncoder.encode(rawPassword));
+        user.setPassword(rawPassword); // store as plain text for now
         user.setRole(Role.CUSTOMER);
 
         return userRepository.save(user);
@@ -48,6 +43,10 @@ public class UserServiceImpl implements UserService {
         }
         return null;
     }
+
+    /* =====================
+       CRUD-style methods
+       ===================== */
 
     @Override
     public User postData(User user) {

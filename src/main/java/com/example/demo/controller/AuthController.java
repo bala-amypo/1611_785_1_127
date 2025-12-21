@@ -27,7 +27,7 @@ public class AuthController {
 
     @DeleteMapping("/delete/{id}")
     public String deleteVal(@PathVariable long id) {
-        return ser.deleteData(id); // fixed method name
+        return ser.deleteData(id);
     }
 
     @GetMapping("/getid/{id}")
@@ -37,6 +37,6 @@ public class AuthController {
 
     @PutMapping("/put/{id}")
     public User putVal(@PathVariable long id, @RequestBody User entity) {
-        return ser.updateData(id, entity); // fixed variable usage
+        return ser.updateData(id, entity); 
     }
 }
