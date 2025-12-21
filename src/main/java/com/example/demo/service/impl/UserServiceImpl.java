@@ -1,42 +1,79 @@
 package com.example.demo.service.impl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.stereotype.Service;
-import com.example.demo.entity.User;
-import com.example.demo.service.UserService;
-import java.util.List;
-import com.example.demo.repository.UserRepo;
-@Service
 
-public class UserServiceImpl implements UserService{
-    @Autowired UserRepo student;
-    //save()
-    //findAll()
-    //findById()
-    //deleteById();
-    //existById();
-    @Override
-    public User postData(User stu){
-        return student.save(stu);
+import java.util.List;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.entity.User;
+import com.example.demo.entity.User.Role;
+import com.example.demo.repository.UserRepository;
+import com.example.demo.service.UserService;
+import com.example.demo.util.JwtUtil;
+
+@Service
+public class UserServiceImpl implements UserService {
+
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil; 
+
+    public UserServiceImpl(UserRepository userRepository,
+                           PasswordEncoder passwordEncoder,
+                           JwtUtil jwtUtil) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
     }
+
+
     @Override
-    public List<User>getAllData(){
-        return student.findAll();
+    public User registerCustomer(String name, String email, String rawPassword) {
+
+        userRepository.findByEmail(email).ifPresent(u -> {
+            throw new RuntimeException("email already exists");
+        });
+
+        User user = new User();
+        user.setFullName(name);
+        user.setEmail(email);
+        user.setPassword(passwordEncoder.encode(rawPassword));
+        user.setRole(Role.CUSTOMER);
+
+        return userRepository.save(user);
     }
+
     @Override
-    public String DeleteData(long id){
-        student.deleteById(id);
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).orElse(null);
+    }
+
+    @Override
+    public User postData(User user) {
+        return userRepository.save(user);
+    }
+
+    @Override
+    public List<User> getAllData() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public String deleteData(long id) {
+        userRepository.deleteById(id);
         return "Deleted Successfully";
     }
+
     @Override
-    public User getData(long id){
-        return student.findById(id).orElse(null);
+    public User getData(long id) {
+        return userRepository.findById(id).orElse(null);
     }
+
     @Override
-    public User updateData(long id,User entity){
-        if(student.existsById(id)){
+    public User updateData(long id, User entity) {
+        if (userRepository.existsById(id)) {
             entity.setId(id);
-            return student.save(entity);
+            return userRepository.save(entity);
         }
         return null;
     }
