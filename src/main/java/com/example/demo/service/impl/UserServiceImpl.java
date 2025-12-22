@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getData(long id) {
-        return repo.findById(id).orElseThrow(()->new ResourceNotFoundException);
+        return repo.findById(id).orElseThrow(()->new ResourceNotFoundException("Not Found"));
     }
 
     @Override
