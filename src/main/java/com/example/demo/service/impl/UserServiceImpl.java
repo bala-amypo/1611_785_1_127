@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.example.de
 import com.example.demo.entity.User;
 import com.example.demo.entity.User.Role;
 import com.example.demo.repository.UserRepository;
@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getData(long id) {
-        return repo.findById(id).orElse(null);
+        return repo.findById(id).orElseThrow(()->new ResourceNotFoundException);
     }
 
     @Override
