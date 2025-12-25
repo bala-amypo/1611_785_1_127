@@ -1,78 +1,35 @@
-package com.example.demo.service.impl;
+package com.example.demo.service;
 
-import java.util.List;
-
+import com.example.demo.entity.User;
+import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.entity.User;
-import com.example.demo.entity.User.Role;
-import com.example.demo.repository.UserRepository;
-import com.example.demo.service.UserService;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserRepository repo;
+    private UserRepository userRepository;
 
     @Override
-    public User registerCustomer(String name, String email, String password) {
-
-        if (repo.findByEmail(email).isPresent()) {
-            return null;
-        }
-
-        User user = new User();
-        user.setFullName(name);
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setRole(Role.CUSTOMER);
-
-        return repo.save(user);
+    public User saveUser(User user) {
+        return userRepository.save(user);
     }
 
     @Override
-    public User login(String email, String password) {
-
-        User user = repo.findByEmail(email).orElse(null);
-
-        if (user != null && user.getPassword().equals(password)) {
-            return user;
-        }
-        return null;
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
     @Override
-    public User postData(User user) {
-        return repo.save(user);
+    public Optional<User> getUserById(Long id) {
+        return userRepository.findById(id);
     }
 
     @Override
-    public List<User> getAllData() {
-        return repo.findAll();
-    }
-
-    @Override
-    public User getData(long id) {
-        return repo.findById(id).orElseThrow(()->new ResourceNotFoundException("Not Found"));
-    }
-
-    @Override
-    public User updateData(long id, User entity) {
-        if (repo.existsById(id)) {
-            entity.setId(id);
-            return repo.save(entity);
-        }
-        return null;
-    }
-
-    @Override
-    public String deleteData(long id) {
-        if (repo.existsById(id)) {
-            repo.deleteById(id);
-            return "Deleted Successfully";
-        }
-        return "User Not Found";
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
     }
 }

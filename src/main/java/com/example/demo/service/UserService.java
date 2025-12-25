@@ -1,16 +1,12 @@
 package com.example.demo.service;
 
-import java.util.List;
 import com.example.demo.entity.User;
+import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
-
-    User registerCustomer(String name, String email, String password);
-    User login(String email, String password);
-
-    User postData(User user);
-    List<User> getAllData();
-    User getData(long id);
-    User updateData(long id, User entity);
-    String deleteData(long id);
+    User saveUser(User user);
+    List<User> getAllUsers();
+    Optional<User> getUserById(Long id);
+    void deleteUser(Long id);
 }
