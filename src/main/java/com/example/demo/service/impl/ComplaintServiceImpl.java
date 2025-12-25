@@ -1,21 +1,20 @@
-package com.example.demo.service;
+package com.example.demo.service.impl;
 
 import com.example.demo.entity.Complaint;
 import com.example.demo.repository.ComplaintRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.service.ComplaintService;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ComplaintServiceImpl implements ComplaintService {
 
-    @Autowired
-    private ComplaintRepository complaintRepository;
+    private final ComplaintRepository complaintRepository;
 
-    @Override
-    public Complaint saveComplaint(Complaint complaint) {
-        return complaintRepository.save(complaint);
+    public ComplaintServiceImpl(ComplaintRepository complaintRepository) {
+        this.complaintRepository = complaintRepository;
     }
 
     @Override
@@ -24,8 +23,22 @@ public class ComplaintServiceImpl implements ComplaintService {
     }
 
     @Override
-    public Optional<Complaint> getComplaintById(Long id) {
-        return complaintRepository.findById(id);
+    public Complaint getComplaintById(Long id) {
+        return complaintRepository.findById(id).orElseThrow();
+    }
+
+    @Override
+    public Complaint createComplaint(Complaint complaint) {
+        return complaintRepository.save(complaint);
+    }
+
+    @Override
+    public Complaint updateComplaint(Long id, Complaint complaint) {
+        Complaint existing = complaintRepository.findById(id).orElseThrow();
+        existing.setTitle(complaint.getTitle());
+        existing.setDescription(complaint.getDescription());
+        // copy other fields as needed
+        return complaintRepository.save(existing);
     }
 
     @Override

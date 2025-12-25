@@ -1,21 +1,19 @@
-package com.example.demo.service;
+package com.example.demo.service.impl;
 
 import com.example.demo.entity.PriorityRule;
 import com.example.demo.repository.PriorityRuleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.service.PriorityRuleService;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PriorityRuleServiceImpl implements PriorityRuleService {
 
-    @Autowired
-    private PriorityRuleRepository priorityRuleRepository;
+    private final PriorityRuleRepository priorityRuleRepository;
 
-    @Override
-    public PriorityRule savePriorityRule(PriorityRule priorityRule) {
-        return priorityRuleRepository.save(priorityRule);
+    public PriorityRuleServiceImpl(PriorityRuleRepository priorityRuleRepository) {
+        this.priorityRuleRepository = priorityRuleRepository;
     }
 
     @Override
@@ -24,8 +22,21 @@ public class PriorityRuleServiceImpl implements PriorityRuleService {
     }
 
     @Override
-    public Optional<PriorityRule> getPriorityRuleById(Long id) {
-        return priorityRuleRepository.findById(id);
+    public PriorityRule getPriorityRuleById(Long id) {
+        return priorityRuleRepository.findById(id).orElseThrow();
+    }
+
+    @Override
+    public PriorityRule createPriorityRule(PriorityRule rule) {
+        return priorityRuleRepository.save(rule);
+    }
+
+    @Override
+    public PriorityRule updatePriorityRule(Long id, PriorityRule rule) {
+        PriorityRule existing = priorityRuleRepository.findById(id).orElseThrow();
+        existing.setName(rule.getName());
+        existing.setPriority(rule.getPriority());
+        return priorityRuleRepository.save(existing);
     }
 
     @Override
