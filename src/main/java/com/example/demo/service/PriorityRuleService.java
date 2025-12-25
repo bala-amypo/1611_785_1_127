@@ -1,17 +1,12 @@
 package com.example.demo.service;
 
-import java.util.List;
 import com.example.demo.entity.PriorityRule;
+import java.util.List;
+import java.util.Optional;
 
 public interface PriorityRuleService {
-
-    PriorityRule addNewRule(PriorityRule rule);
-
-    List<PriorityRule> fetchAllRules();
-
-    PriorityRule fetchRuleById(Long id);
-
-    PriorityRule modifyRule(Long id, PriorityRule rule);
-
-    String removeRule(Long id);
+    PriorityRule savePriorityRule(PriorityRule priorityRule);
+    List<PriorityRule> getAllPriorityRules();
+    Optional<PriorityRule> getPriorityRuleById(Long id);
+    void deletePriorityRule(Long id);
 }

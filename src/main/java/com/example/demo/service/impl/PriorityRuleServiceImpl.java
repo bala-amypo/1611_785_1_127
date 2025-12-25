@@ -1,52 +1,35 @@
-package com.example.demo.service.impl;
-
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+package com.example.demo.service;
 
 import com.example.demo.entity.PriorityRule;
 import com.example.demo.repository.PriorityRuleRepository;
-import com.example.demo.service.PriorityRuleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PriorityRuleServiceImpl implements PriorityRuleService {
 
     @Autowired
-    private PriorityRuleRepository repository;
+    private PriorityRuleRepository priorityRuleRepository;
 
     @Override
-    public PriorityRule addNewRule(PriorityRule rule) {
-        return repository.save(rule);
+    public PriorityRule savePriorityRule(PriorityRule priorityRule) {
+        return priorityRuleRepository.save(priorityRule);
     }
 
     @Override
-    public List<PriorityRule> fetchAllRules() {
-        return repository.findAll();
+    public List<PriorityRule> getAllPriorityRules() {
+        return priorityRuleRepository.findAll();
     }
 
     @Override
-    public PriorityRule fetchRuleById(Long id) {
-        return repository.findById(id).orElse(null);
+    public Optional<PriorityRule> getPriorityRuleById(Long id) {
+        return priorityRuleRepository.findById(id);
     }
 
     @Override
-    public PriorityRule modifyRule(Long id, PriorityRule rule) {
-        return repository.findById(id).map(existing -> {
-            existing.setRuleName(rule.getRuleName());
-            existing.setDescription(rule.getDescription());
-            existing.setWeight(rule.getWeight());
-            existing.setActive(rule.isActive());
-            return repository.save(existing);
-        }).orElse(null);
-    }
-
-    @Override
-    public String removeRule(Long id) {
-        if (repository.existsById(id)) {
-            repository.deleteById(id);
-            return "Deleted Successfully";
-        }
-        return "Rule Not Found";
+    public void deletePriorityRule(Long id) {
+        priorityRuleRepository.deleteById(id);
     }
 }

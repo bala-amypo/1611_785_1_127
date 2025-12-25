@@ -1,52 +1,35 @@
 package com.example.demo.service;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.example.demo.entity.Complaint;
 import com.example.demo.repository.ComplaintRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ComplaintServiceImpl implements ComplaintService {
 
     @Autowired
-    ComplaintRepository repo;
+    private ComplaintRepository complaintRepository;
 
     @Override
-    public Complaint postData(Complaint complaint) {
-        return repo.save(complaint);
+    public Complaint saveComplaint(Complaint complaint) {
+        return complaintRepository.save(complaint);
     }
 
     @Override
-    public List<Complaint> getAllData() {
-        return repo.findAll();
+    public List<Complaint> getAllComplaints() {
+        return complaintRepository.findAll();
     }
 
     @Override
-    public Complaint getDataById(Long id) {
-        return repo.findById(id).orElse(null);
+    public Optional<Complaint> getComplaintById(Long id) {
+        return complaintRepository.findById(id);
     }
 
     @Override
-    public Complaint updateData(Long id, Complaint complaint) {
-        Complaint existing = repo.findById(id).orElse(null);
-        if (existing == null) {
-            return null;
-        }
-        complaint.setId(id);
-        return repo.save(complaint);
-    }
-
-    @Override
-    public String deleteData(Long id) {
-        repo.deleteById(id);
-        return "Complaint Deleted";
-    }
-
-    @Override
-    public List<Complaint> getPrioritizedComplaints() {
-        return repo.findAllByOrderByPriorityScoreDescCreatedAtAsc();
+    public void deleteComplaint(Long id) {
+        complaintRepository.deleteById(id);
     }
 }
