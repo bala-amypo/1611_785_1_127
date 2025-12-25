@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.PriorityRule;
 import com.example.demo.service.PriorityRuleService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,27 +11,25 @@ import java.util.List;
 @RequestMapping("/priority-rules")
 public class PriorityRuleController {
 
-    @Autowired
-    private PriorityRuleService priorityRuleService;
+    private final PriorityRuleService priorityRuleService;
 
-    @GetMapping
-    public ResponseEntity<List<PriorityRule>> getAllPriorityRules() {
-        return ResponseEntity.ok(priorityRuleService.getAllPriorityRules());
+    public PriorityRuleController(PriorityRuleService priorityRuleService) {
+        this.priorityRuleService = priorityRuleService;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<PriorityRule> getPriorityRuleById(@PathVariable Long id) {
-        return ResponseEntity.ok(priorityRuleService.getPriorityRuleById(id));
+    @GetMapping
+    public List<PriorityRule> getAllPriorityRules() {
+        return priorityRuleService.getAllPriorityRules();
     }
 
     @PostMapping
-    public ResponseEntity<PriorityRule> createPriorityRule(@RequestBody PriorityRule priorityRule) {
-        return ResponseEntity.ok(priorityRuleService.createPriorityRule(priorityRule));
+    public PriorityRule createPriorityRule(@RequestBody PriorityRule rule) {
+        return priorityRuleService.createPriorityRule(rule);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PriorityRule> updatePriorityRule(@PathVariable Long id, @RequestBody PriorityRule priorityRule) {
-        return ResponseEntity.ok(priorityRuleService.updatePriorityRule(id, priorityRule));
+    public PriorityRule updatePriorityRule(@PathVariable Long id, @RequestBody PriorityRule rule) {
+        return priorityRuleService.updatePriorityRule(id, rule);
     }
 
     @DeleteMapping("/{id}")

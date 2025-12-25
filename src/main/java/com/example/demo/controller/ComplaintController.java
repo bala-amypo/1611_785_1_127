@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Complaint;
 import com.example.demo.service.ComplaintService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,27 +11,25 @@ import java.util.List;
 @RequestMapping("/complaints")
 public class ComplaintController {
 
-    @Autowired
-    private ComplaintService complaintService;
+    private final ComplaintService complaintService;
 
-    @GetMapping
-    public ResponseEntity<List<Complaint>> getAllComplaints() {
-        return ResponseEntity.ok(complaintService.getAllComplaints());
+    public ComplaintController(ComplaintService complaintService) {
+        this.complaintService = complaintService;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Complaint> getComplaintById(@PathVariable Long id) {
-        return ResponseEntity.ok(complaintService.getComplaintById(id));
+    @GetMapping
+    public List<Complaint> getAllComplaints() {
+        return complaintService.getAllComplaints();
     }
 
     @PostMapping
-    public ResponseEntity<Complaint> createComplaint(@RequestBody Complaint complaint) {
-        return ResponseEntity.ok(complaintService.createComplaint(complaint));
+    public Complaint createComplaint(@RequestBody Complaint complaint) {
+        return complaintService.createComplaint(complaint);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Complaint> updateComplaint(@PathVariable Long id, @RequestBody Complaint complaint) {
-        return ResponseEntity.ok(complaintService.updateComplaint(id, complaint));
+    public Complaint updateComplaint(@PathVariable Long id, @RequestBody Complaint complaint) {
+        return complaintService.updateComplaint(id, complaint);
     }
 
     @DeleteMapping("/{id}")
