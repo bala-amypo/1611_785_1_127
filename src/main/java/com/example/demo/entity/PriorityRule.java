@@ -1,13 +1,16 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 public class PriorityRule {
 
@@ -16,8 +19,11 @@ public class PriorityRule {
     private Long id;
 
     private String ruleName;
+
     private String description;
+
     private Integer weight;
+
     private boolean active = true;
 
     @ManyToMany(mappedBy = "priorityRules")
