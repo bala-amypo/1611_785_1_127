@@ -1,13 +1,14 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "priority_rule")
-@Getter
-@Setter
+@Getter @Setter
+@NoArgsConstructor
 public class PriorityRule {
 
     @Id
@@ -18,4 +19,7 @@ public class PriorityRule {
     private String description;
     private Integer weight;
     private boolean active = true;
+
+    @ManyToMany(mappedBy = "priorityRules")
+    private Set<Complaint> complaints = new HashSet<>();
 }
