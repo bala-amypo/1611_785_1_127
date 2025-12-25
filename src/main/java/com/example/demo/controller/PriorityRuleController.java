@@ -1,47 +1,43 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
+import com.example.demo.entity.PriorityRule;
+import com.example.demo.service.PriorityRuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.demo.entity.PriorityRule;
-import com.example.demo.service.PriorityRuleService;
+import java.util.List;
 
 @RestController
 @RequestMapping("/priority-rules")
 public class PriorityRuleController {
 
     @Autowired
-    private PriorityRuleService service;
+    private PriorityRuleService priorityRuleService;
 
-    @PostMapping("/add")
-    public ResponseEntity<PriorityRule> addRule(@RequestBody PriorityRule rule) {
-        return ResponseEntity.ok(service.addNewRule(rule));
+    @GetMapping
+    public ResponseEntity<List<PriorityRule>> getAllPriorityRules() {
+        return ResponseEntity.ok(priorityRuleService.getAllPriorityRules());
     }
 
-    @GetMapping("/list")
-    public ResponseEntity<List<PriorityRule>> listRules() {
-        return ResponseEntity.ok(service.fetchAllRules());
+    @GetMapping("/{id}")
+    public ResponseEntity<PriorityRule> getPriorityRuleById(@PathVariable Long id) {
+        return ResponseEntity.ok(priorityRuleService.getPriorityRuleById(id));
     }
 
-    @GetMapping("/view/{id}")
-    public ResponseEntity<PriorityRule> viewRule(@PathVariable Long id) {
-        PriorityRule rule = service.fetchRuleById(id);
-        if (rule == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(rule);
+    @PostMapping
+    public ResponseEntity<PriorityRule> createPriorityRule(@RequestBody PriorityRule priorityRule) {
+        return ResponseEntity.ok(priorityRuleService.createPriorityRule(priorityRule));
     }
 
-    @PutMapping("/edit/{id}")
-    public ResponseEntity<PriorityRule> editRule(@PathVariable Long id, @RequestBody PriorityRule rule) {
-        PriorityRule updated = service.modifyRule(id, rule);
-        if (updated == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(updated);
+    @PutMapping("/{id}")
+    public ResponseEntity<PriorityRule> updatePriorityRule(@PathVariable Long id, @RequestBody PriorityRule priorityRule) {
+        return ResponseEntity.ok(priorityRuleService.updatePriorityRule(id, priorityRule));
     }
 
-    @DeleteMapping("/remove/{id}")
-    public ResponseEntity<String> removeRule(@PathVariable Long id) {
-        return ResponseEntity.ok(service.removeRule(id));
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePriorityRule(@PathVariable Long id) {
+        priorityRuleService.deletePriorityRule(id);
+        return ResponseEntity.ok().build();
     }
 }

@@ -1,84 +1,43 @@
 package com.example.demo.controller;
 
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
+import com.example.demo.util.JwtUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
-    private UserService service;
+    private AuthenticationManager authenticationManager;
 
-    @PostMapping("/register")
-public Object register(@RequestBody Map<String, String> req) {
+    @Autowired
+    private UserService userService;
 
-    String name = req.get("name");
-    String email = req.get("email");
-    String password = req.get("password");
-
-    if (name == null || email == null || password == null) {
-        return Map.of("message", "All fields are required");
-    }
-
-    User user = service.registerCustomer(name, email, password);
-
-    if (user == null) {
-        return Map.of("message", "Email already exists");
-    }
-
-    return user;
-}
-
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @PostMapping("/login")
-    public Object login(@RequestBody Map<String, String> req) {
-
-        User user = service.login(
-                req.get("email"),
-                req.get("password")
-        );
-
-        if (user == null) {
-            return Map.of("message", "Invalid credentials");
+    public ResponseEntity<?> login(@RequestBody User user) {
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
+            );
+            String token = jwtUtil.generateToken(user.getUsername());
+            return ResponseEntity.ok(token);
+        } catch (AuthenticationException e) {
+            return ResponseEntity.status(401).body("Invalid credentials");
         }
-
-        return Map.of(
-                "id", user.getId(),
-                "name", user.getFullName(),
-                "email", user.getEmail(),
-                "role", user.getRole()
-        );
     }
 
-    @PostMapping("/users/post")
-    public User post(@RequestBody User user) {
-        return service.postData(user);
-    }
-
-    @GetMapping("/users/get")
-    public List<User> getAll() {
-        return service.getAllData();
-    }
-
-    @GetMapping("/users/getid/{id}")
-    public User getById(@PathVariable long id) {
-        return service.getData(id);
-    }
-
-    @PutMapping("/users/put/{id}")
-    public User update(@PathVariable long id, @RequestBody User user) {
-        return service.updateData(id, user);
-    }
-
-    @DeleteMapping("/users/delete/{id}")
-    public String delete(@PathVariable long id) {
-        return service.deleteData(id);
+    @PostMapping("/register")
+    public ResponseEntity<User> register(@RequestBody User user) {
+        return ResponseEntity.ok(userService.saveUser(user));
     }
 }
