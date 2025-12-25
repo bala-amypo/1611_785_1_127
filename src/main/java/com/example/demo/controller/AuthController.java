@@ -1,55 +1,38 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.User;
 import com.example.demo.security.JwtUtil;
-import com.example.demo.model.User;
-import com.example.demo.repository.UserRepository;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.core.AuthenticationException;
+import com.example.demo.service.UserService;
+import org.springframework.security.authentication.*;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
+    private final UserService userService;
     private final JwtUtil jwtUtil;
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
-    public AuthController(AuthenticationManager authenticationManager,
-                          JwtUtil jwtUtil,
-                          UserRepository userRepository,
-                          PasswordEncoder passwordEncoder) {
+    public AuthController(AuthenticationManager authenticationManager, UserService userService, JwtUtil jwtUtil) {
         this.authenticationManager = authenticationManager;
+        this.userService = userService;
         this.jwtUtil = jwtUtil;
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
-
-    @PostMapping("/register")
-    public String register(@RequestBody User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
-        return "User registered successfully!";
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody User user) throws Exception {
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
-            );
-        } catch (AuthenticationException e) {
-            throw new Exception("Invalid username or password");
-        }
-        final String token = jwtUtil.generateToken(
-                org.springframework.security.core.userdetails.User.builder()
-                        .username(user.getUsername())
-                        .password(user.getPassword())
-                        .roles("USER").build()
+    public Map<String, String> login(@RequestBody User user) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
         );
-        return token;
+        String token = jwtUtil.generateToken(user.getUsername());
+        return Map.of("token", token);
+    }
+
+    @PostMapping("/register")
+    public User register(@RequestBody User user) {
+        return userService.createUser(user);
     }
 }
