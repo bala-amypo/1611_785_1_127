@@ -11,19 +11,22 @@ import java.util.List;
 
 public class ComplaintServiceImpl implements ComplaintService {
 
-    private final ComplaintRepository repository;
+    private final ComplaintRepository complaintRepository;
     private final PriorityRuleService priorityRuleService;
 
-    public ComplaintServiceImpl(ComplaintRepository repository,
-                                Object ignored1,
-                                Object ignored2,
-                                PriorityRuleService priorityRuleService) {
-        this.repository = repository;
+    public ComplaintServiceImpl(
+            ComplaintRepository complaintRepository,
+            Object ignored1,
+            Object ignored2,
+            PriorityRuleService priorityRuleService) {
+
+        this.complaintRepository = complaintRepository;
         this.priorityRuleService = priorityRuleService;
     }
 
     @Override
     public Complaint submitComplaint(ComplaintRequest request, User customer) {
+
         Complaint c = new Complaint();
         c.setTitle(request.getTitle());
         c.setDescription(request.getDescription());
@@ -36,16 +39,16 @@ public class ComplaintServiceImpl implements ComplaintService {
         int score = priorityRuleService.computePriorityScore(c);
         c.setPriorityScore(score);
 
-        return repository.save(c);
+        return complaintRepository.save(c);
     }
 
     @Override
     public List<Complaint> getComplaintsForUser(User customer) {
-        return repository.findByCustomer(customer);
+        return complaintRepository.findByCustomer(customer);
     }
 
     @Override
     public List<Complaint> getPrioritizedComplaints() {
-        return repository.findAllOrderByPriorityScoreDescCreatedAtAsc();
+        return complaintRepository.findAllOrderByPriorityScoreDescCreatedAtAsc();
     }
 }

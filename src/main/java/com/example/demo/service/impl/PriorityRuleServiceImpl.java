@@ -19,16 +19,19 @@ public class PriorityRuleServiceImpl implements PriorityRuleService {
     public int computePriorityScore(Complaint complaint) {
         int score = 0;
 
-        if (complaint.getSeverity() != null)
+        if (complaint.getSeverity() != null) {
             score += complaint.getSeverity().ordinal() + 1;
+        }
 
-        if (complaint.getUrgency() != null)
+        if (complaint.getUrgency() != null) {
             score += complaint.getUrgency().ordinal() + 1;
+        }
 
         List<PriorityRule> rules = repository.findByActiveTrue();
-        for (PriorityRule r : rules) {
-            score += r.getWeight();
+        for (PriorityRule rule : rules) {
+            score += rule.getWeight();
         }
+
         return Math.max(score, 0);
     }
 
