@@ -6,11 +6,11 @@ import org.springframework.security.core.userdetails.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.util.Collections;
 
-public class CustomUserDetailsService implements UserDetailsService {
+public class CustomerUserDetailsService implements UserDetailsService {
 
     private final UserRepository repo;
 
-    public CustomUserDetailsService(UserRepository repo) {
+    public CustomerUserDetailsService(UserRepository repo) {
         this.repo = repo;
     }
 
