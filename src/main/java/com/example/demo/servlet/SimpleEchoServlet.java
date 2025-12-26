@@ -6,12 +6,11 @@ import java.io.IOException;
 
 public class SimpleEchoServlet extends HttpServlet {
 
-    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+            throws IOException {
 
+        resp.setStatus(200);
         resp.setContentType("text/plain");
-        resp.setStatus(HttpServletResponse.SC_OK);
 
         String name = req.getParameter("name");
         if (name == null || name.trim().isEmpty()) {
