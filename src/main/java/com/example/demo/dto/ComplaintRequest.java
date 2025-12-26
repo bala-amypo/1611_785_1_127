@@ -1,41 +1,31 @@
 package com.example.demo.dto;
 
-public class ComplaintRequest {
+import com.example.demo.entity.Complaint;
 
+public class ComplaintRequest {
     private String title;
     private String description;
-    private Long userId;
+    private String category;
+    private String channel;
+    private Complaint.Severity severity;
+    private Complaint.Urgency urgency;
 
-    public ComplaintRequest() {
-    }
+    // getters & setters
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
 
-    public ComplaintRequest(String title, String description, Long userId) {
-        this.title = title;
-        this.description = description;
-        this.userId = userId;
-    }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    public String getTitle() {
-        return title;
-    }
+    public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    public String getChannel() { return channel; }
+    public void setChannel(String channel) { this.channel = channel; }
 
-    public String getDescription() {
-        return description;
-    }
+    public Complaint.Severity getSeverity() { return severity; }
+    public void setSeverity(Complaint.Severity severity) { this.severity = severity; }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
+    public Complaint.Urgency getUrgency() { return urgency; }
+    public void setUrgency(Complaint.Urgency urgency) { this.urgency = urgency; }
 }
