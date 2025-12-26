@@ -1,49 +1,94 @@
+// // package com.example.demo.entity;
+
+// // import jakarta.persistence.*;
+// // import java.util.ArrayList;
+// // import java.util.List;
+
+// // @Entity
+// // @Table(name = "priority_rules")
+// // public class PriorityRule {
+// //     @Id
+// //     @GeneratedValue(strategy = GenerationType.IDENTITY)
+// //     private Long id;
+    
+// //     @Column(name = "rule_name")
+// //     private String ruleName;
+    
+// //     private String description;
+    
+// //     private int weight;
+    
+// //     private boolean active = true;
+    
+// //     @ManyToMany(mappedBy = "priorityRules")
+// //     private List<Complaint> complaints = new ArrayList<>();
+
+// //     // Constructors
+// //     public PriorityRule() {}
+
+// //     // Getters and Setters
+// //     public Long getId() { return id; }
+// //     public void setId(Long id) { this.id = id; }
+    
+// //     public String getRuleName() { return ruleName; }
+// //     public void setRuleName(String ruleName) { this.ruleName = ruleName; }
+    
+// //     public String getDescription() { return description; }
+// //     public void setDescription(String description) { this.description = description; }
+    
+// //     public int getWeight() { return weight; }
+// //     public void setWeight(int weight) { this.weight = weight; }
+    
+// //     public boolean isActive() { return active; }
+// //     public void setActive(boolean active) { this.active = active; }
+    
+// //     public List<Complaint> getComplaints() { return complaints; }
+// //     public void setComplaints(List<Complaint> complaints) { this.complaints = complaints; }
+// // }
+
 // package com.example.demo.entity;
 
 // import jakarta.persistence.*;
-// import java.util.ArrayList;
-// import java.util.List;
+
+// import java.util.HashSet;
+// import java.util.Set;
 
 // @Entity
-// @Table(name = "priority_rules")
 // public class PriorityRule {
+
 //     @Id
 //     @GeneratedValue(strategy = GenerationType.IDENTITY)
 //     private Long id;
-    
-//     @Column(name = "rule_name")
+
 //     private String ruleName;
-    
 //     private String description;
-    
 //     private int weight;
-    
 //     private boolean active = true;
-    
+
 //     @ManyToMany(mappedBy = "priorityRules")
-//     private List<Complaint> complaints = new ArrayList<>();
+//     private Set<Complaint> complaints = new HashSet<>();
 
-//     // Constructors
-//     public PriorityRule() {}
+//     public PriorityRule() { }
 
-//     // Getters and Setters
+//     // ===== getters / setters =====
+
 //     public Long getId() { return id; }
 //     public void setId(Long id) { this.id = id; }
-    
+
 //     public String getRuleName() { return ruleName; }
 //     public void setRuleName(String ruleName) { this.ruleName = ruleName; }
-    
+
 //     public String getDescription() { return description; }
 //     public void setDescription(String description) { this.description = description; }
-    
+
 //     public int getWeight() { return weight; }
 //     public void setWeight(int weight) { this.weight = weight; }
-    
+
 //     public boolean isActive() { return active; }
 //     public void setActive(boolean active) { this.active = active; }
-    
-//     public List<Complaint> getComplaints() { return complaints; }
-//     public void setComplaints(List<Complaint> complaints) { this.complaints = complaints; }
+
+//     public Set<Complaint> getComplaints() { return complaints; }
+//     public void setComplaints(Set<Complaint> complaints) { this.complaints = complaints; }
 // }
 
 package com.example.demo.entity;
@@ -61,8 +106,11 @@ public class PriorityRule {
     private Long id;
 
     private String ruleName;
+
     private String description;
+
     private int weight;
+
     private boolean active = true;
 
     @ManyToMany(mappedBy = "priorityRules")
@@ -90,4 +138,3 @@ public class PriorityRule {
     public Set<Complaint> getComplaints() { return complaints; }
     public void setComplaints(Set<Complaint> complaints) { this.complaints = complaints; }
 }
-
