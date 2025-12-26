@@ -1,46 +1,39 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.entity.Complaint;
 import com.example.demo.entity.PriorityRule;
 import com.example.demo.repository.PriorityRuleRepository;
 import com.example.demo.service.PriorityRuleService;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public class PriorityRuleServiceImpl implements PriorityRuleService {
 
-    private final PriorityRuleRepository priorityRuleRepository;
+    private final PriorityRuleRepository repository;
 
-    public PriorityRuleServiceImpl(PriorityRuleRepository priorityRuleRepository) {
-        this.priorityRuleRepository = priorityRuleRepository;
+    public PriorityRuleServiceImpl(PriorityRuleRepository repository) {
+        this.repository = repository;
     }
 
     @Override
-    public List<PriorityRule> getAllPriorityRules() {
-        return priorityRuleRepository.findAll();
+    public int computePriorityScore(Complaint complaint) {
+        int score = 0;
+
+        if (complaint.getSeverity() != null)
+            score += complaint.getSeverity().ordinal() + 1;
+
+        if (complaint.getUrgency() != null)
+            score += complaint.getUrgency().ordinal() + 1;
+
+        List<PriorityRule> rules = repository.findByActiveTrue();
+        for (PriorityRule r : rules) {
+            score += r.getWeight();
+        }
+        return Math.max(score, 0);
     }
 
     @Override
-    public PriorityRule getPriorityRuleById(Long id) {
-        return priorityRuleRepository.findById(id).orElseThrow();
-    }
-
-    @Override
-    public PriorityRule createPriorityRule(PriorityRule rule) {
-        return priorityRuleRepository.save(rule);
-    }
-
-    @Override
-    public PriorityRule updatePriorityRule(Long id, PriorityRule rule) {
-        PriorityRule existing = priorityRuleRepository.findById(id).orElseThrow();
-        existing.setName(rule.getName());
-        existing.setPriority(rule.getPriority());
-        return priorityRuleRepository.save(existing);
-    }
-
-    @Override
-    public void deletePriorityRule(Long id) {
-        priorityRuleRepository.deleteById(id);
+    public List<PriorityRule> getActiveRules() {
+        return repository.findByActiveTrue();
     }
 }
