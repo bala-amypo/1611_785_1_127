@@ -204,6 +204,7 @@
 //     public void setPriorityRules(Set<PriorityRule> priorityRules) { this.priorityRules = priorityRules; }
 // }
 
+
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
@@ -315,5 +316,9 @@ public class Complaint {
     public Integer getPriorityScore() { return priorityScore; }
     public void setPriorityScore(Integer priorityScore) { this.priorityScore = priorityScore; }
 
-    public Instant getCreatedAt() { return
+    public Instant getCreatedAt() { return createdAt; }
+    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
 
+    public Set<PriorityRule> getPriorityRules() { return priorityRules; }
+    public void setPriorityRules(Set<PriorityRule> priorityRules) { this.priorityRules = priorityRules; }
+}

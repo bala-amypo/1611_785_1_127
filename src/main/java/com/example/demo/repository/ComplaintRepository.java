@@ -13,6 +13,7 @@
 //     List<Complaint> findAllOrderByPriorityScoreDescCreatedAtAsc();
 // }
 
+// src/main/java/com/example/demo/repository/ComplaintRepository.java
 package com.example.demo.repository;
 
 import com.example.demo.entity.Complaint;
@@ -25,6 +26,6 @@ public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
 
     List<Complaint> findByCustomer(User customer);
 
-    // used in tests for HQL / prioritized complaints
-    List<Complaint> findAllOrderByPriorityScoreDescCreatedAtAsc();
+    // Correct Spring Data naming for ORDER BY priorityScore DESC, createdAt ASC
+    List<Complaint> findAllByOrderByPriorityScoreDescCreatedAtAsc();
 }
