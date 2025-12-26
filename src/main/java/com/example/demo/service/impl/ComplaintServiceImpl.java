@@ -52,6 +52,7 @@
 //     }
 // }
 
+
 package com.example.demo.service.impl;
 
 import com.example.demo.dto.ComplaintRequest;
@@ -68,7 +69,7 @@ public class ComplaintServiceImpl implements ComplaintService {
     private final ComplaintRepository complaintRepository;
     private final PriorityRuleService priorityRuleService;
 
-    // 4-argument constructor, as expected by the test
+    // 4-argument constructor expected by the test
     public ComplaintServiceImpl(ComplaintRepository complaintRepository,
                                 Object ignored1,
                                 Object ignored2,
@@ -101,6 +102,7 @@ public class ComplaintServiceImpl implements ComplaintService {
 
     @Override
     public List<Complaint> getPrioritizedComplaints() {
+        // Same method name used in tests and backed by @Query in the repository
         return complaintRepository.findAllOrderByPriorityScoreDescCreatedAtAsc();
     }
 }
