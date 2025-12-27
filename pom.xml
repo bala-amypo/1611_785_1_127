@@ -132,10 +132,6 @@
     <artifactId>spring-security-crypto</artifactId>
 </dependency>
 
-
-<!-- comment -->
-
-
     </dependencies>
 
 	<build>
