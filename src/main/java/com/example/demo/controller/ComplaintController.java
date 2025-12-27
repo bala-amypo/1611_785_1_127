@@ -3,9 +3,10 @@ package com.example.demo.controller;
 import com.example.demo.dto.ComplaintRequest;
 import com.example.demo.entity.Complaint;
 import com.example.demo.entity.User;
-import com.example.demo.security.JwtUtil;
 import com.example.demo.service.ComplaintService;
 import com.example.demo.service.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,43 +17,39 @@ public class ComplaintController {
 
     private final ComplaintService complaintService;
     private final UserService userService;
-    private final JwtUtil jwtUtil;
 
-    public ComplaintController(
-            ComplaintService complaintService,
-            UserService userService,
-            JwtUtil jwtUtil
-    ) {
+    public ComplaintController(ComplaintService complaintService,
+                               UserService userService) {
         this.complaintService = complaintService;
         this.userService = userService;
-        this.jwtUtil = jwtUtil;
     }
 
+    // 👉 Submit a new complaint
     @PostMapping
-    public Complaint submitComplaint(
+    public ResponseEntity<Complaint> submitComplaint(
             @RequestBody ComplaintRequest request,
-            @RequestHeader("Authorization") String authHeader
+            @RequestParam String email
     ) {
-        String token = authHeader.replace("Bearer ", "");
-        String email = jwtUtil.extractEmail(token);
-        User user = userService.findByEmail(email);
-
-        return complaintService.submitComplaint(request, user);
+        User customer = userService.findByEmail(email);
+        Complaint complaint = complaintService.submitComplaint(request, customer);
+        return new ResponseEntity<>(complaint, HttpStatus.CREATED);
     }
 
-    @GetMapping("/my")
-    public List<Complaint> getMyComplaints(
-            @RequestHeader("Authorization") String authHeader
+    // 👉 Get complaints for a specific user
+    @GetMapping("/user/{email}")
+    public ResponseEntity<List<Complaint>> getComplaintsForUser(
+            @PathVariable String email
     ) {
-        String token = authHeader.replace("Bearer ", "");
-        String email = jwtUtil.extractEmail(token);
-        User user = userService.findByEmail(email);
-
-        return complaintService.getComplaintsForUser(user);
+        User customer = userService.findByEmail(email);
+        List<Complaint> complaints = complaintService.getComplaintsForUser(customer);
+        return ResponseEntity.ok(complaints);
     }
 
+    // 👉 Get all complaints ordered by priority
     @GetMapping("/prioritized")
-    public List<Complaint> getPrioritizedComplaints() {
-        return complaintService.getPrioritizedComplaints();
+    public ResponseEntity<List<Complaint>> getPrioritizedComplaints() {
+        return ResponseEntity.ok(
+                complaintService.getPrioritizedComplaints()
+        );
     }
 }
