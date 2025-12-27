@@ -39,9 +39,7 @@
 
 package com.example.demo.controller;
 
-import com.example.demo.entity.Complaint;
 import com.example.demo.entity.PriorityRule;
-import com.example.demo.repository.PriorityRuleRepository;
 import com.example.demo.service.PriorityRuleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,37 +51,31 @@ import java.util.List;
 public class PriorityRuleController {
 
     private final PriorityRuleService priorityRuleService;
-    private final PriorityRuleRepository priorityRuleRepository;
 
-    public PriorityRuleController(
-            PriorityRuleService priorityRuleService,
-            PriorityRuleRepository priorityRuleRepository
-    ) {
+    public PriorityRuleController(PriorityRuleService priorityRuleService) {
         this.priorityRuleService = priorityRuleService;
-        this.priorityRuleRepository = priorityRuleRepository;
     }
 
-    // ✅ CREATE priority rule (THIS WAS MISSING)
+    // ✅ CREATE priority rule
     @PostMapping
     public ResponseEntity<PriorityRule> createRule(
             @RequestBody PriorityRule rule
     ) {
-        return ResponseEntity.ok(priorityRuleRepository.save(rule));
+        return ResponseEntity.ok(priorityRuleService.save(rule));
     }
 
-    // ✅ GET all active rules
+    // ✅ GET active rules
     @GetMapping("/active")
     public ResponseEntity<List<PriorityRule>> getActiveRules() {
         return ResponseEntity.ok(priorityRuleService.getActiveRules());
     }
 
-    // ✅ COMPUTE priority score
+    // ✅ COMPUTE score
     @PostMapping("/compute")
     public ResponseEntity<Integer> computePriorityScore(
-            @RequestBody Complaint complaint
+            @RequestBody com.example.demo.entity.Complaint complaint
     ) {
         int score = priorityRuleService.computePriorityScore(complaint);
         return ResponseEntity.ok(score);
     }
 }
-
