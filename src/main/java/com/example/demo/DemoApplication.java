@@ -9,7 +9,7 @@ public class DemoApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
-		system.out.println(new BcryptPasswordEncoder().encode(""))
+		system.out.println(new BCryptPasswordEncoder().encode("code"));
 	}
 
 }
