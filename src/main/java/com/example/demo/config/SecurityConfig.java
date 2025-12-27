@@ -108,8 +108,7 @@
 //     }
 // }
  
-
- package com.example.demo.config;
+package com.example.demo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -127,27 +126,17 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-            // REST API → no CSRF
+            // 🔴 disable EVERYTHING that can block requests
             .csrf(csrf -> csrf.disable())
-
-            // Disable default login mechanisms
             .formLogin(form -> form.disable())
             .httpBasic(basic -> basic.disable())
 
-            // Authorization rules
+            // 🔴 allow ALL requests (temporary, for debugging)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                        "/api/users/**",           // users (register, get)
-                        "/api/priority-rules/**",  // ✅ FIX (compute, active)
-                        "/api/complaints/**",      // complaints (if any)
-                        "/v3/api-docs/**",         // swagger
-                        "/swagger-ui/**",
-                        "/swagger-ui.html"
-                ).permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
             );
 
         return http.build();
