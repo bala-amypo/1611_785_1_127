@@ -65,7 +65,51 @@
 // }
 
 
-package com.example.demo.config;
+// package com.example.demo.config;
+
+// import org.springframework.context.annotation.Bean;
+// import org.springframework.context.annotation.Configuration;
+// import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+// import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+// import org.springframework.security.crypto.password.PasswordEncoder;
+// import org.springframework.security.web.SecurityFilterChain;
+
+// @Configuration
+// public class SecurityConfig {
+
+//     @Bean
+//     public PasswordEncoder passwordEncoder() {
+//         return new BCryptPasswordEncoder();
+//     }
+
+//     @Bean
+//     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+//         http
+//             // Disable CSRF for REST APIs
+//             .csrf(csrf -> csrf.disable())
+
+//             // Disable default login mechanisms
+//             .formLogin(form -> form.disable())
+//             .httpBasic(basic -> basic.disable())
+
+//             // Authorization rules
+//             .authorizeHttpRequests(auth -> auth
+//                 .requestMatchers(
+//                         "/api/users/**",        // ✅ allow register + get user
+//                         "/v3/api-docs/**",      // swagger
+//                         "/swagger-ui/**",
+//                         "/swagger-ui.html"
+//                 ).permitAll()
+//                 .anyRequest().authenticated()
+//             );
+
+//         return http.build();
+//     }
+// }
+ 
+
+ package com.example.demo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -86,7 +130,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-            // Disable CSRF for REST APIs
+            // REST API → no CSRF
             .csrf(csrf -> csrf.disable())
 
             // Disable default login mechanisms
@@ -96,8 +140,10 @@ public class SecurityConfig {
             // Authorization rules
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
-                        "/api/users/**",        // ✅ allow register + get user
-                        "/v3/api-docs/**",      // swagger
+                        "/api/users/**",           // users (register, get)
+                        "/api/priority-rules/**",  // ✅ FIX (compute, active)
+                        "/api/complaints/**",      // complaints (if any)
+                        "/v3/api-docs/**",         // swagger
                         "/swagger-ui/**",
                         "/swagger-ui.html"
                 ).permitAll()
@@ -107,4 +153,3 @@ public class SecurityConfig {
         return http.build();
     }
 }
- 
