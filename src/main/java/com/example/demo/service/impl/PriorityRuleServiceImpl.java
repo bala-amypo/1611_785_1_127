@@ -30,7 +30,6 @@
 //         return score;
 //     }
 // }
-
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.Complaint;
@@ -50,11 +49,19 @@ public class PriorityRuleServiceImpl implements PriorityRuleService {
         this.priorityRuleRepository = priorityRuleRepository;
     }
 
+    // ✅ save rule
+    @Override
+    public PriorityRule save(PriorityRule rule) {
+        return priorityRuleRepository.save(rule);
+    }
+
+    // ✅ fetch only active rules
     @Override
     public List<PriorityRule> getActiveRules() {
         return priorityRuleRepository.findByActiveTrue();
     }
 
+    // ✅ compute priority score
     @Override
     public int computePriorityScore(Complaint complaint) {
 
@@ -63,11 +70,11 @@ public class PriorityRuleServiceImpl implements PriorityRuleService {
         // 1️⃣ Severity-based scoring
         if (complaint.getSeverity() != null) {
             switch (complaint.getSeverity()) {
-                case HIGH:
-                    score += 5;
-                    break;
                 case CRITICAL:
                     score += 10;
+                    break;
+                case HIGH:
+                    score += 5;
                     break;
                 default:
                     break;
@@ -88,7 +95,7 @@ public class PriorityRuleServiceImpl implements PriorityRuleService {
             }
         }
 
-        // 3️⃣ DB-based priority rules
+        // 3️⃣ DB-based rules
         List<PriorityRule> rules = getActiveRules();
         for (PriorityRule rule : rules) {
             score += rule.getWeight();
