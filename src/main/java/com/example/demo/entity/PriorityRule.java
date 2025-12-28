@@ -20,14 +20,11 @@ public class PriorityRule {
 
     private int weight;
 
-    // ✅ IMPORTANT: default active = true (fixes test)
     private boolean active = true;
 
     @ManyToMany(mappedBy = "priorityRules")
     @JsonIgnore
     private Set<Complaint> complaints = new HashSet<>();
-
-    // ===== getters / setters =====
 
     public Long getId() {
         return id;

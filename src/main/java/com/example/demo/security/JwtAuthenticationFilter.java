@@ -8,13 +8,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-/**
- * JWT Authentication Filter
- *
- * NOTE:
- * This filter is currently NOT wired into SecurityConfig.
- * It exists only for project structure / future use.
- */
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
