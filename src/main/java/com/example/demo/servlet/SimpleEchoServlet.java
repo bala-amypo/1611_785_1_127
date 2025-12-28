@@ -9,7 +9,6 @@ import java.io.IOException;
 
 public class SimpleEchoServlet extends HttpServlet {
 
-    // must be public so the test can call it directly
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setStatus(HttpServletResponse.SC_OK);
