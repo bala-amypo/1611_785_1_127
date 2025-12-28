@@ -79,9 +79,10 @@
 //         return ResponseEntity.ok(score);
 //     }
 // }
+
 package com.example.demo.controller;
 
-import com.example.demo.dto.ComplaintComputeRequest;
+import com.example.demo.dto.ComplaintResponse;
 import com.example.demo.entity.Complaint;
 import com.example.demo.entity.PriorityRule;
 import com.example.demo.service.PriorityRuleService;
@@ -100,6 +101,7 @@ public class PriorityRuleController {
         this.priorityRuleService = priorityRuleService;
     }
 
+    // ✅ CREATE priority rule
     @PostMapping
     public ResponseEntity<PriorityRule> createRule(
             @RequestBody PriorityRule rule
@@ -107,23 +109,24 @@ public class PriorityRuleController {
         return ResponseEntity.ok(priorityRuleService.save(rule));
     }
 
+    // ✅ GET all active rules
     @GetMapping("/active")
     public ResponseEntity<List<PriorityRule>> getActiveRules() {
         return ResponseEntity.ok(priorityRuleService.getActiveRules());
     }
 
-    // ✅ FIXED COMPUTE ENDPOINT
+    // ✅ COMPUTE priority score (using DTO)
     @PostMapping("/compute")
     public ResponseEntity<Integer> computePriority(
-            @RequestBody ComplaintComputeRequest request
+            @RequestBody ComplaintResponse request
     ) {
-        Complaint c = new Complaint();
-        c.setSeverity(request.getSeverity());
-        c.setUrgency(request.getUrgency());
-        c.setCategory(request.getCategory());
-        c.setChannel(request.getChannel());
+        Complaint complaint = new Complaint();
+        complaint.setSeverity(request.getSeverity());
+        complaint.setUrgency(request.getUrgency());
+        complaint.setCategory(request.getCategory());
+        complaint.setChannel(request.getChannel());
 
-        int score = priorityRuleService.computePriorityScore(c);
+        int score = priorityRuleService.computePriorityScore(complaint);
         return ResponseEntity.ok(score);
     }
 }
