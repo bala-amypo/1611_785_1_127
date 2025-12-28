@@ -24,7 +24,6 @@ public class ComplaintController {
         this.userService = userService;
     }
 
-    // 👉 Submit a new complaint
     @PostMapping
     public ResponseEntity<Complaint> submitComplaint(
             @RequestBody ComplaintRequest request,
@@ -35,7 +34,6 @@ public class ComplaintController {
         return new ResponseEntity<>(complaint, HttpStatus.CREATED);
     }
 
-    // 👉 Get complaints for a specific user
     @GetMapping("/user/{email}")
     public ResponseEntity<List<Complaint>> getComplaintsForUser(
             @PathVariable String email
@@ -45,7 +43,6 @@ public class ComplaintController {
         return ResponseEntity.ok(complaints);
     }
 
-    // 👉 Get all complaints ordered by priority
     @GetMapping("/prioritized")
     public ResponseEntity<List<Complaint>> getPrioritizedComplaints() {
         return ResponseEntity.ok(
