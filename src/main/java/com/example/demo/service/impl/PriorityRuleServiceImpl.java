@@ -59,7 +59,6 @@ public class PriorityRuleServiceImpl implements PriorityRuleService {
             }
         }
 
-        // 3️⃣ DB-based rules
         List<PriorityRule> rules = getActiveRules();
         for (PriorityRule rule : rules) {
             score += rule.getWeight();

@@ -11,7 +11,6 @@ public class ComplaintRequest {
     private Complaint.Severity severity;
     private Complaint.Urgency urgency;
 
-    // getters & setters
     public String getTitle() {
         return title;
     }
