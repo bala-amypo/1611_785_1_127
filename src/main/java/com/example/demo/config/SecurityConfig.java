@@ -141,7 +141,47 @@
 
 //         return http.build();
 //     }
+// // }
+// package com.example.demo.config;
+
+// import org.springframework.context.annotation.Bean;
+// import org.springframework.context.annotation.Configuration;
+// import org.springframework.security.config.Customizer;
+// import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+// import org.springframework.security.web.SecurityFilterChain;
+// import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+// import org.springframework.security.crypto.password.PasswordEncoder;
+
+// @Configuration
+// public class SecurityConfig {
+
+//     // ✅ Password encoder
+//     @Bean
+//     public PasswordEncoder passwordEncoder() {
+//         return new BCryptPasswordEncoder();
+//     }
+
+//     // ✅ THIS ENABLES LOGIN PAGE
+//     @Bean
+//     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+//         http
+//             .csrf(csrf -> csrf.disable()) // ok for APIs / Swagger
+//             .authorizeHttpRequests(auth -> auth
+//                 .requestMatchers(
+//                         "/swagger-ui/**",
+//                         "/v3/api-docs/**",
+//                         "/api/users/register"
+//                 ).permitAll()
+//                 .anyRequest().authenticated()
+//             )
+//             .formLogin(Customizer.withDefaults()) // 👈 THIS creates /login
+//             .httpBasic(Customizer.withDefaults());
+
+//         return http.build();
+//     }
 // }
+
 package com.example.demo.config;
 
 import org.springframework.context.annotation.Bean;
@@ -155,29 +195,32 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class SecurityConfig {
 
-    // ✅ Password encoder
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    // ✅ THIS ENABLES LOGIN PAGE
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-            .csrf(csrf -> csrf.disable()) // ok for APIs / Swagger
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
-                        "/swagger-ui/**",
-                        "/v3/api-docs/**",
-                        "/api/users/register"
+                    "/login",
+                    "/swagger-ui/**",
+                    "/v3/api-docs/**"
                 ).permitAll()
                 .anyRequest().authenticated()
             )
-            .formLogin(Customizer.withDefaults()) // 👈 THIS creates /login
-            .httpBasic(Customizer.withDefaults());
+            .formLogin(form -> form
+                .loginPage("/login")
+                // ✅ THIS IS THE KEY LINE
+                .defaultSuccessUrl("/swagger-ui/index.html", true)
+                .permitAll()
+            )
+            .logout(Customizer.withDefaults());
 
         return http.build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
