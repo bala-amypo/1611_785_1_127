@@ -17,13 +17,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        // 🔒 Placeholder for future JWT logic
-        // Example (not implemented):
-        // - Extract Authorization header
-        // - Validate JWT token
-        // - Set Authentication in SecurityContext
-
-        // Continue filter chain without modification
         filterChain.doFilter(request, response);
     }
 }
