@@ -31,7 +31,6 @@ public class PriorityRuleController {
         return ResponseEntity.ok(priorityRuleService.getActiveRules());
     }
 
-    // ✅ COMPUTE priority score (using DTO)
     @PostMapping("/compute")
     public ResponseEntity<Integer> computePriority(
             @RequestBody ComplaintResponse request
