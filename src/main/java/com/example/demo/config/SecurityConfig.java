@@ -108,36 +108,75 @@
 //     }
 // }
  
+// package com.example.demo.config;
+
+// import org.springframework.context.annotation.Bean;
+// import org.springframework.context.annotation.Configuration;
+// import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+// import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+// import org.springframework.security.crypto.password.PasswordEncoder;
+// import org.springframework.security.web.SecurityFilterChain;
+
+// @Configuration
+// public class SecurityConfig {
+
+//     @Bean
+//     public PasswordEncoder passwordEncoder() {
+//         return new BCryptPasswordEncoder();
+//     }
+
+//     @Bean
+//     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+//         http
+//             // 🔴 disable EVERYTHING that can block requests
+//             .csrf(csrf -> csrf.disable())
+//             .formLogin(form -> form.disable())
+//             .httpBasic(basic -> basic.disable())
+
+//             // 🔴 allow ALL requests (temporary, for debugging)
+//             .authorizeHttpRequests(auth -> auth
+//                 .anyRequest().permitAll()
+//             );
+
+//         return http.build();
+//     }
+// }
 package com.example.demo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class SecurityConfig {
 
+    // ✅ Password encoder
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    // ✅ THIS ENABLES LOGIN PAGE
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-            // 🔴 disable EVERYTHING that can block requests
-            .csrf(csrf -> csrf.disable())
-            .formLogin(form -> form.disable())
-            .httpBasic(basic -> basic.disable())
-
-            // 🔴 allow ALL requests (temporary, for debugging)
+            .csrf(csrf -> csrf.disable()) // ok for APIs / Swagger
             .authorizeHttpRequests(auth -> auth
-                .anyRequest().permitAll()
-            );
+                .requestMatchers(
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**",
+                        "/api/users/register"
+                ).permitAll()
+                .anyRequest().authenticated()
+            )
+            .formLogin(Customizer.withDefaults()) // 👈 THIS creates /login
+            .httpBasic(Customizer.withDefaults());
 
         return http.build();
     }
