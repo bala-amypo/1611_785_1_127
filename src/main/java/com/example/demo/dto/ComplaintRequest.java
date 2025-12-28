@@ -2,28 +2,30 @@ package com.example.demo.dto;
 
 import com.example.demo.entity.Complaint;
 
-public class ComplaintComputeRequest {
+public class ComplaintRequest {
 
-    private Complaint.Severity severity;
-    private Complaint.Urgency urgency;
+    private String title;
+    private String description;
     private String category;
     private String channel;
+    private Complaint.Severity severity;
+    private Complaint.Urgency urgency;
 
     // getters & setters
-    public Complaint.Severity getSeverity() {
-        return severity;
+    public String getTitle() {
+        return title;
     }
 
-    public void setSeverity(Complaint.Severity severity) {
-        this.severity = severity;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public Complaint.Urgency getUrgency() {
-        return urgency;
+    public String getDescription() {
+        return description;
     }
 
-    public void setUrgency(Complaint.Urgency urgency) {
-        this.urgency = urgency;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getCategory() {
@@ -40,5 +42,21 @@ public class ComplaintComputeRequest {
 
     public void setChannel(String channel) {
         this.channel = channel;
+    }
+
+    public Complaint.Severity getSeverity() {
+        return severity;
+    }
+
+    public void setSeverity(Complaint.Severity severity) {
+        this.severity = severity;
+    }
+
+    public Complaint.Urgency getUrgency() {
+        return urgency;
+    }
+
+    public void setUrgency(Complaint.Urgency urgency) {
+        this.urgency = urgency;
     }
 }
